@@ -1,0 +1,2972 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haber Holding · Sistema de Diseño v1.0</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    /* ─────────────────────────────────────────────
+       HH DESIGN TOKENS · v1.0
+       Inspired by Material 3 token architecture
+       Adapted to the HH dense-data aesthetic
+       ───────────────────────────────────────────── */
+
+    /* ── SURFACE / BACKGROUND ── */
+    --hh-bg:        #0c0c0c;
+    --hh-surface-1: #141414;  /* default surface */
+    --hh-surface-2: #1a1a1a;  /* raised */
+    --hh-surface-3: #222222;  /* higher */
+    --hh-surface-4: #2a2a2a;  /* highest (modals, menus) */
+    --hh-surface-5: #333333;  /* hover/active overlay */
+
+    /* ── BORDERS ── */
+    --hh-border-1: rgba(255,255,255,0.06);  /* hairline */
+    --hh-border-2: rgba(255,255,255,0.10);  /* default */
+    --hh-border-3: rgba(255,255,255,0.15);  /* strong */
+    --hh-border-4: rgba(255,255,255,0.22);  /* emphasis */
+
+    /* ── TEXT (on dark) ── */
+    --hh-text-1: #ffffff;          /* primary */
+    --hh-text-2: #cccccc;          /* secondary */
+    --hh-text-3: #999999;          /* tertiary / labels */
+    --hh-text-4: #666666;          /* disabled */
+    --hh-text-inverse: #0c0c0c;    /* on light surfaces */
+
+    /* ── BRAND (monochromatic blue) ── */
+    --hh-brand-50:  #e8eef1;
+    --hh-brand-100: #c5d2da;
+    --hh-brand-200: #9fb5c1;
+    --hh-brand-300: #80a4b3;   /* brand-1 (light accent) */
+    --hh-brand-400: #5a8a9e;
+    --hh-brand-500: #41768d;   /* brand-2 (PRIMARY) */
+    --hh-brand-600: #2a5d75;
+    --hh-brand-700: #014867;   /* brand-3 (deep) */
+    --hh-brand-800: #013349;
+    --hh-brand-900: #001f2c;
+
+    /* ── STATUS / SEMANTIC ── */
+    --hh-success:    #44aa99;
+    --hh-success-bg: rgba(68,170,153,0.08);
+    --hh-success-bd: rgba(68,170,153,0.25);
+
+    --hh-warning:    #ddaa44;
+    --hh-warning-bg: rgba(221,170,68,0.08);
+    --hh-warning-bd: rgba(221,170,68,0.25);
+
+    --hh-alert:      #e08a3c;
+    --hh-alert-bg:   rgba(224,138,60,0.08);
+    --hh-alert-bd:   rgba(224,138,60,0.25);
+
+    --hh-danger:     #dd5555;
+    --hh-danger-bg:  rgba(221,85,85,0.08);
+    --hh-danger-bd:  rgba(221,85,85,0.25);
+
+    --hh-info:       #80a4b3;
+    --hh-info-bg:    rgba(128,164,179,0.08);
+    --hh-info-bd:    rgba(128,164,179,0.25);
+
+    /* ── DATA-VIZ PALETTE (categorical, accessible on dark) ── */
+    --hh-viz-1: #41768d;  /* primary blue */
+    --hh-viz-2: #80a4b3;  /* light blue */
+    --hh-viz-3: #44aa99;  /* teal */
+    --hh-viz-4: #ddaa44;  /* gold */
+    --hh-viz-5: #e08a3c;  /* orange */
+    --hh-viz-6: #c07a8a;  /* dusty rose */
+    --hh-viz-7: #8a6fa0;  /* muted violet */
+    --hh-viz-8: #6b8e9b;  /* slate blue */
+
+    /* ── TYPOGRAPHY ── */
+    --hh-font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --hh-font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+    /* Type scale (compact, optimized for dense data UIs) */
+    --hh-fs-display:   28px;  /* page hero / login */
+    --hh-fs-h1:        20px;  /* page title */
+    --hh-fs-h2:        16px;  /* section title */
+    --hh-fs-h3:        14px;  /* card title */
+    --hh-fs-kpi-lg:    24px;  /* primary KPI */
+    --hh-fs-kpi:       22px;  /* KPI */
+    --hh-fs-kpi-sm:    18px;  /* small KPI */
+    --hh-fs-body:      13px;  /* body text */
+    --hh-fs-data:      12px;  /* table data */
+    --hh-fs-nav:       11px;  /* nav, buttons */
+    --hh-fs-label:     10px;  /* labels, captions */
+    --hh-fs-micro:     9px;   /* badges, tags */
+    --hh-fs-tiny:      8px;   /* annotations */
+
+    /* Font weights */
+    --hh-fw-light:    300;
+    --hh-fw-regular:  400;
+    --hh-fw-medium:   500;
+    --hh-fw-semibold: 600;
+
+    /* Line heights */
+    --hh-lh-tight:  1.15;
+    --hh-lh-snug:   1.35;
+    --hh-lh-normal: 1.45;
+    --hh-lh-relaxed: 1.6;
+
+    /* Letter spacing */
+    --hh-ls-tight:   -0.01em;
+    --hh-ls-normal:   0;
+    --hh-ls-wide:     0.05em;
+    --hh-ls-wider:    0.1em;
+
+    /* ── SPACING (4px base, M3-inspired) ── */
+    --hh-space-0:  0;
+    --hh-space-1:  2px;
+    --hh-space-2:  4px;
+    --hh-space-3:  6px;
+    --hh-space-4:  8px;
+    --hh-space-5:  10px;
+    --hh-space-6:  12px;
+    --hh-space-7:  14px;
+    --hh-space-8:  16px;
+    --hh-space-10: 20px;
+    --hh-space-12: 24px;
+    --hh-space-14: 28px;
+    --hh-space-16: 32px;
+    --hh-space-20: 40px;
+    --hh-space-24: 48px;
+    --hh-space-32: 64px;
+
+    /* ── SIZING ── */
+    --hh-header-h:    40px;
+    --hh-navbar-h:    36px;
+    --hh-input-h:     32px;
+    --hh-btn-h:       32px;
+    --hh-btn-h-sm:    26px;
+    --hh-btn-h-lg:    40px;
+    --hh-icon-sm:     14px;
+    --hh-icon-md:     16px;
+    --hh-icon-lg:     20px;
+
+    /* ── RADIUS (HH = sharp edges; M3 = rounded. We stay sharp for data UIs) ── */
+    --hh-radius-0:   0;
+    --hh-radius-1:   2px;
+    --hh-radius-2:   4px;
+    --hh-radius-3:   6px;
+    --hh-radius-pill: 999px;
+
+    /* ── ELEVATION (M3-inspired layered shadows for dark UI) ── */
+    --hh-elev-0: none;
+    --hh-elev-1: 0 1px 2px rgba(0,0,0,0.4);
+    --hh-elev-2: 0 2px 4px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.3);
+    --hh-elev-3: 0 4px 8px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.4);
+    --hh-elev-4: 0 8px 16px rgba(0,0,0,0.6), 0 4px 8px rgba(0,0,0,0.4);
+    --hh-elev-5: 0 16px 32px rgba(0,0,0,0.7), 0 8px 16px rgba(0,0,0,0.5);
+
+    /* ── MOTION (M3 easing tokens) ── */
+    --hh-ease-standard:    cubic-bezier(0.2, 0, 0, 1);
+    --hh-ease-emphasized:  cubic-bezier(0.3, 0, 0, 1);
+    --hh-ease-decelerate:  cubic-bezier(0, 0, 0, 1);
+    --hh-ease-accelerate:  cubic-bezier(0.3, 0, 1, 1);
+
+    --hh-dur-instant: 50ms;
+    --hh-dur-fast:    100ms;
+    --hh-dur-quick:   150ms;
+    --hh-dur-normal:  200ms;
+    --hh-dur-slow:    300ms;
+    --hh-dur-slower:  400ms;
+
+    /* ── STATE LAYERS (M3 concept: opacity overlays for hover/focus/press) ── */
+    --hh-state-hover:   rgba(255,255,255,0.04);
+    --hh-state-focus:   rgba(255,255,255,0.08);
+    --hh-state-press:   rgba(255,255,255,0.12);
+    --hh-state-select:  rgba(65,118,141,0.16);
+
+    /* ── Z-INDEX SCALE ── */
+    --hh-z-base:     1;
+    --hh-z-sticky:   100;
+    --hh-z-navbar:   190;
+    --hh-z-header:   200;
+    --hh-z-dropdown: 300;
+    --hh-z-modal:    400;
+    --hh-z-toast:    500;
+    --hh-z-tooltip:  600;
+  }
+
+  /* ═══════════════════════════════════════════════
+     RESET + BASE
+     ═══════════════════════════════════════════════ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--hh-bg); scroll-behavior: smooth; }
+  body {
+    background: var(--hh-bg);
+    color: var(--hh-text-1);
+    font-family: var(--hh-font-sans);
+    font-size: var(--hh-fs-body);
+    line-height: var(--hh-lh-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--hh-bg); }
+  ::-webkit-scrollbar-thumb { background: var(--hh-surface-3); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--hh-surface-4); }
+
+  /* ═══════════════════════════════════════════════
+     APP SHELL
+     ═══════════════════════════════════════════════ */
+  .ds-app {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .ds-sidebar {
+    background: var(--hh-surface-1);
+    border-right: 1px solid var(--hh-border-1);
+    padding: var(--hh-space-8) 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .ds-brand {
+    padding: 0 var(--hh-space-12) var(--hh-space-12);
+    border-bottom: 1px solid var(--hh-border-1);
+    margin-bottom: var(--hh-space-8);
+  }
+  .ds-brand-mark {
+    width: 32px; height: 32px;
+    background: var(--hh-brand-500);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: var(--hh-fw-bold);
+    font-size: 14px;
+    letter-spacing: var(--hh-ls-wide);
+    margin-bottom: var(--hh-space-6);
+  }
+  .ds-brand-name {
+    font-size: var(--hh-fs-body);
+    font-weight: var(--hh-fw-semibold);
+    color: var(--hh-text-1);
+    letter-spacing: var(--hh-ls-wide);
+  }
+  .ds-brand-sub {
+    font-size: var(--hh-fs-micro);
+    color: var(--hh-text-3);
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wider);
+    margin-top: 2px;
+  }
+
+  .ds-nav-section {
+    padding: var(--hh-space-8) var(--hh-space-12) var(--hh-space-3);
+    font-size: var(--hh-fs-micro);
+    font-weight: var(--hh-fw-semibold);
+    color: var(--hh-text-3);
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wider);
+  }
+  .ds-nav-link {
+    display: block;
+    padding: var(--hh-space-3) var(--hh-space-12);
+    font-size: var(--hh-fs-nav);
+    color: var(--hh-text-2);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all var(--hh-dur-quick) var(--hh-ease-standard);
+  }
+  .ds-nav-link:hover {
+    background: var(--hh-state-hover);
+    color: var(--hh-text-1);
+  }
+  .ds-nav-link.active {
+    background: var(--hh-state-select);
+    color: var(--hh-brand-300);
+    border-left-color: var(--hh-brand-500);
+  }
+
+  /* ── MAIN CONTENT ── */
+  .ds-main {
+    padding: var(--hh-space-16) var(--hh-space-20);
+    max-width: 1200px;
+    width: 100%;
+  }
+  .ds-page-header {
+    padding-bottom: var(--hh-space-12);
+    border-bottom: 1px solid var(--hh-border-1);
+    margin-bottom: var(--hh-space-16);
+  }
+  .ds-page-eyebrow {
+    font-size: var(--hh-fs-micro);
+    color: var(--hh-brand-300);
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wider);
+    font-weight: var(--hh-fw-semibold);
+    margin-bottom: var(--hh-space-3);
+  }
+  .ds-page-title {
+    font-size: var(--hh-fs-h1);
+    font-weight: var(--hh-fw-semibold);
+    color: var(--hh-text-1);
+    letter-spacing: var(--hh-ls-tight);
+    margin-bottom: var(--hh-space-3);
+  }
+  .ds-page-desc {
+    font-size: var(--hh-fs-body);
+    color: var(--hh-text-2);
+    max-width: 720px;
+    line-height: var(--hh-lh-relaxed);
+  }
+
+  .ds-section {
+    margin-bottom: var(--hh-space-20);
+  }
+  .ds-section-title {
+    font-size: var(--hh-fs-h2);
+    font-weight: var(--hh-fw-semibold);
+    color: var(--hh-text-1);
+    margin-bottom: var(--hh-space-3);
+    padding-top: var(--hh-space-8);
+  }
+  .ds-section-desc {
+    font-size: var(--hh-fs-body);
+    color: var(--hh-text-3);
+    margin-bottom: var(--hh-space-12);
+    line-height: var(--hh-lh-relaxed);
+  }
+
+  /* ── DEMO CANVAS (where examples live) ── */
+  .ds-demo {
+    background: var(--hh-surface-1);
+    border: 1px solid var(--hh-border-1);
+    padding: var(--hh-space-16);
+    margin-bottom: var(--hh-space-2);
+  }
+  .ds-demo--padded { padding: var(--hh-space-20); }
+  .ds-demo--flex {
+    display: flex;
+    align-items: center;
+    gap: var(--hh-space-8);
+    flex-wrap: wrap;
+  }
+  .ds-demo--grid {
+    display: grid;
+    gap: var(--hh-space-8);
+  }
+  .ds-demo--center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+  }
+
+  /* ── CODE BLOCK ── */
+  .ds-code {
+    background: #0a0a0a;
+    border: 1px solid var(--hh-border-1);
+    border-top: none;
+    padding: var(--hh-space-12);
+    font-family: var(--hh-font-mono);
+    font-size: var(--hh-fs-data);
+    color: var(--hh-text-2);
+    overflow-x: auto;
+    white-space: pre;
+    line-height: var(--hh-lh-snug);
+    margin-bottom: var(--hh-space-12);
+  }
+  .ds-code .k { color: #c07a8a; }   /* keyword */
+  .ds-code .s { color: #80a4b3; }   /* string */
+  .ds-code .c { color: #666; font-style: italic; } /* comment */
+  .ds-code .a { color: #ddaa44; }   /* attribute */
+
+  /* ═══════════════════════════════════════════════
+     FOUNDATIONS — TOKEN SWATCHES
+     ═══════════════════════════════════════════════ */
+
+  /* Color swatches */
+  .ds-color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--hh-border-1);
+  }
+  .ds-color-swatch {
+    background: var(--hh-surface-1);
+    padding: var(--hh-space-8);
+  }
+  .ds-color-block {
+    height: 56px;
+    margin-bottom: var(--hh-space-6);
+    border: 1px solid var(--hh-border-1);
+  }
+  .ds-color-name {
+    font-size: var(--hh-fs-data);
+    font-weight: var(--hh-fw-medium);
+    color: var(--hh-text-1);
+  }
+  .ds-color-token {
+    font-family: var(--hh-font-mono);
+    font-size: var(--hh-fs-micro);
+    color: var(--hh-text-3);
+    margin-top: 2px;
+  }
+  .ds-color-hex {
+    font-family: var(--hh-font-mono);
+    font-size: var(--hh-fs-micro);
+    color: var(--hh-text-2);
+  }
+
+  /* Brand ramp */
+  .ds-brand-ramp {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 1px;
+    background: var(--hh-border-1);
+  }
+  .ds-brand-step {
+    padding: var(--hh-space-12) var(--hh-space-6);
+    text-align: center;
+    font-family: var(--hh-font-mono);
+    font-size: var(--hh-fs-micro);
+  }
+  .ds-brand-step span {
+    display: block;
+    font-size: var(--hh-fs-tiny);
+    margin-top: 4px;
+    opacity: 0.7;
+  }
+
+  /* Type scale */
+  .ds-type-row {
+    display: grid;
+    grid-template-columns: 80px 100px 1fr;
+    gap: var(--hh-space-12);
+    align-items: baseline;
+    padding: var(--hh-space-8) 0;
+    border-bottom: 1px solid var(--hh-border-1);
+  }
+  .ds-type-token {
+    font-family: var(--hh-font-mono);
+    font-size: var(--hh-fs-micro);
+    color: var(--hh-brand-300);
+  }
+  .ds-type-meta {
+    font-family: var(--hh-font-mono);
+    font-size: var(--hh-fs-micro);
+    color: var(--hh-text-3);
+  }
+  .ds-type-sample {
+    color: var(--hh-text-1);
+    font-family: var(--hh-font-sans);
+  }
+
+  /* Spacing scale */
+  .ds-space-row {
+    display: grid;
+    grid-template-columns: 100px 80px 1fr;
+    gap: var(--hh-space-12);
+    align-items: center;
+    padding: var(--hh-space-4) 0;
+  }
+  .ds-space-token {
+    font-family: var(--hh-font-mono);
+    font-size: var(--hh-fs-data);
+    color: var(--hh-brand-300);
+  }
+  .ds-space-value {
+    font-family: var(--hh-font-mono);
+    font-size: var(--hh-fs-data);
+    color: var(--hh-text-3);
+  }
+  .ds-space-bar {
+    height: 16px;
+    background: var(--hh-brand-500);
+  }
+
+  /* Elevation samples */
+  .ds-elev-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--hh-space-12);
+  }
+  .ds-elev-card {
+    background: var(--hh-surface-2);
+    padding: var(--hh-space-12);
+    text-align: center;
+    border: 1px solid var(--hh-border-1);
+  }
+  .ds-elev-card .lvl {
+    font-family: var(--hh-font-mono);
+    font-size: var(--hh-fs-label);
+    color: var(--hh-brand-300);
+    margin-bottom: var(--hh-space-3);
+  }
+  .ds-elev-card .desc {
+    font-size: var(--hh-fs-micro);
+    color: var(--hh-text-3);
+  }
+
+  /* ═══════════════════════════════════════════════
+     COMPONENT STYLES (the actual reusable system)
+     These should match the compensaciones demo so devs
+     can copy them straight into production.
+     ═══════════════════════════════════════════════ */
+
+  /* ── BUTTONS ── */
+  .hh-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--hh-space-4);
+    height: var(--hh-btn-h);
+    padding: 0 var(--hh-space-12);
+    font-family: var(--hh-font-sans);
+    font-size: var(--hh-fs-nav);
+    font-weight: var(--hh-fw-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wide);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all var(--hh-dur-quick) var(--hh-ease-standard);
+    white-space: nowrap;
+  }
+  .hh-btn:focus-visible {
+    outline: 2px solid var(--hh-brand-300);
+    outline-offset: 1px;
+  }
+  .hh-btn--sm { height: var(--hh-btn-h-sm); padding: 0 var(--hh-space-8); font-size: var(--hh-fs-label); }
+  .hh-btn--lg { height: var(--hh-btn-h-lg); padding: 0 var(--hh-space-16); font-size: var(--hh-fs-body); }
+
+  .hh-btn--primary {
+    background: var(--hh-brand-500);
+    color: #fff;
+  }
+  .hh-btn--primary:hover { background: var(--hh-brand-400); }
+  .hh-btn--primary:active { background: var(--hh-brand-600); }
+
+  .hh-btn--secondary {
+    background: transparent;
+    border-color: var(--hh-border-2);
+    color: var(--hh-text-2);
+  }
+  .hh-btn--secondary:hover { background: var(--hh-state-hover); border-color: var(--hh-border-3); color: var(--hh-text-1); }
+
+  .hh-btn--ghost {
+    background: transparent;
+    color: var(--hh-text-3);
+  }
+  .hh-btn--ghost:hover { background: var(--hh-state-hover); color: var(--hh-text-1); }
+
+  .hh-btn--danger {
+    background: var(--hh-danger);
+    color: #fff;
+  }
+  .hh-btn--danger:hover { filter: brightness(1.15); }
+
+  .hh-btn--icon {
+    width: var(--hh-btn-h);
+    padding: 0;
+  }
+  .hh-btn[disabled] { opacity: 0.4; cursor: not-allowed; }
+
+  /* ── INPUTS / FORMS ── */
+  .hh-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hh-space-2);
+  }
+  .hh-label {
+    font-size: var(--hh-fs-label);
+    font-weight: var(--hh-fw-medium);
+    color: var(--hh-text-3);
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wide);
+  }
+  .hh-input,
+  .hh-select,
+  .hh-textarea {
+    width: 100%;
+    height: var(--hh-input-h);
+    background: var(--hh-bg);
+    border: 1px solid var(--hh-border-2);
+    color: var(--hh-text-1);
+    padding: 0 var(--hh-space-8);
+    font-family: inherit;
+    font-size: var(--hh-fs-data);
+    outline: none;
+    transition: border-color var(--hh-dur-quick) var(--hh-ease-standard);
+  }
+  .hh-textarea {
+    height: auto;
+    min-height: 80px;
+    padding: var(--hh-space-6) var(--hh-space-8);
+    line-height: var(--hh-lh-snug);
+    resize: vertical;
+  }
+  .hh-input:focus,
+  .hh-select:focus,
+  .hh-textarea:focus {
+    border-color: var(--hh-brand-500);
+  }
+  .hh-input::placeholder { color: var(--hh-text-4); }
+  .hh-input--error { border-color: var(--hh-danger); }
+  .hh-help {
+    font-size: var(--hh-fs-micro);
+    color: var(--hh-text-3);
+    margin-top: 2px;
+  }
+  .hh-help--error { color: var(--hh-danger); }
+
+  /* ── CHECKBOX / RADIO ── */
+  .hh-checkbox, .hh-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hh-space-4);
+    cursor: pointer;
+    font-size: var(--hh-fs-data);
+    color: var(--hh-text-2);
+  }
+  .hh-checkbox input, .hh-radio input { accent-color: var(--hh-brand-500); }
+
+  /* ── TABLE ── */
+  .hh-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--hh-fs-data);
+  }
+  .hh-table th {
+    text-align: left;
+    padding: var(--hh-space-6) var(--hh-space-8);
+    font-size: var(--hh-fs-label);
+    font-weight: var(--hh-fw-semibold);
+    color: var(--hh-text-3);
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wide);
+    background: var(--hh-surface-2);
+    border-bottom: 2px solid var(--hh-border-2);
+  }
+  .hh-table th.right { text-align: right; }
+  .hh-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding-right: var(--hh-space-16);
+    transition: color var(--hh-dur-quick) var(--hh-ease-standard);
+  }
+  .hh-table th.sortable:hover { color: var(--hh-brand-300); }
+  .hh-table th.sortable::after {
+    content: '⇅';
+    position: absolute;
+    right: var(--hh-space-3);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: var(--hh-fs-micro);
+    opacity: 0.4;
+  }
+  .hh-table td {
+    padding: var(--hh-space-6) var(--hh-space-8);
+    border-bottom: 1px solid var(--hh-border-1);
+    color: var(--hh-text-2);
+    vertical-align: middle;
+  }
+  .hh-table td.right { text-align: right; font-variant-numeric: tabular-nums; }
+  .hh-table td.num { font-family: var(--hh-font-mono); font-size: var(--hh-fs-data); color: var(--hh-text-1); }
+  .hh-table tr:hover td { background: var(--hh-state-hover); }
+  .hh-table .total-row td {
+    font-weight: var(--hh-fw-semibold);
+    background: var(--hh-surface-2);
+    border-top: 2px solid var(--hh-border-2);
+    color: var(--hh-text-1);
+  }
+
+  /* ── KPI CARD ── */
+  .hh-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--hh-border-1);
+  }
+  .hh-kpi {
+    background: var(--hh-surface-1);
+    padding: var(--hh-space-12) var(--hh-space-14);
+  }
+  .hh-kpi-label {
+    font-size: var(--hh-fs-label);
+    color: var(--hh-text-3);
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wide);
+    margin-bottom: var(--hh-space-3);
+    font-weight: var(--hh-fw-medium);
+  }
+  .hh-kpi-value {
+    font-size: var(--hh-fs-kpi);
+    font-weight: var(--hh-fw-light);
+    color: var(--hh-text-1);
+    line-height: var(--hh-lh-tight);
+    font-variant-numeric: tabular-nums;
+  }
+  .hh-kpi-sub {
+    font-size: var(--hh-fs-micro);
+    color: var(--hh-text-2);
+    margin-top: var(--hh-space-3);
+  }
+  .hh-kpi-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: var(--hh-fs-micro);
+    font-weight: var(--hh-fw-medium);
+  }
+  .hh-kpi-trend.up { color: var(--hh-success); }
+  .hh-kpi-trend.down { color: var(--hh-danger); }
+
+  /* ── BADGES & STATUS ── */
+  .hh-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hh-space-2);
+    padding: 2px var(--hh-space-6);
+    font-size: var(--hh-fs-micro);
+    font-weight: var(--hh-fw-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wide);
+    border: 1px solid var(--hh-border-2);
+    color: var(--hh-text-2);
+    background: transparent;
+  }
+  .hh-badge--success { background: var(--hh-success-bg); color: var(--hh-success); border-color: var(--hh-success-bd); }
+  .hh-badge--warning { background: var(--hh-warning-bg); color: var(--hh-warning); border-color: var(--hh-warning-bd); }
+  .hh-badge--alert   { background: var(--hh-alert-bg);   color: var(--hh-alert);   border-color: var(--hh-alert-bd); }
+  .hh-badge--danger  { background: var(--hh-danger-bg);  color: var(--hh-danger);  border-color: var(--hh-danger-bd); }
+  .hh-badge--info    { background: var(--hh-info-bg);    color: var(--hh-info);    border-color: var(--hh-info-bd); }
+
+  .hh-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .hh-dot--success { background: var(--hh-success); box-shadow: 0 0 4px var(--hh-success); }
+  .hh-dot--warning { background: var(--hh-warning); box-shadow: 0 0 4px var(--hh-warning); }
+  .hh-dot--danger  { background: var(--hh-danger);  box-shadow: 0 0 4px var(--hh-danger); }
+  .hh-dot--neutral { background: var(--hh-text-4); }
+
+  /* ── CARDS ── */
+  .hh-card {
+    background: var(--hh-surface-1);
+    border: 1px solid var(--hh-border-1);
+    padding: var(--hh-space-12);
+  }
+  .hh-card-title {
+    font-size: var(--hh-fs-label);
+    font-weight: var(--hh-fw-semibold);
+    color: var(--hh-text-3);
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wide);
+    margin-bottom: var(--hh-space-8);
+  }
+
+  /* ── TABS ── */
+  .hh-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--hh-border-1);
+    margin-bottom: var(--hh-space-12);
+  }
+  .hh-tab {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--hh-text-3);
+    font-family: inherit;
+    font-size: var(--hh-fs-nav);
+    font-weight: var(--hh-fw-medium);
+    padding: var(--hh-space-6) var(--hh-space-12);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wide);
+    transition: all var(--hh-dur-quick) var(--hh-ease-standard);
+  }
+  .hh-tab:hover { color: var(--hh-brand-300); }
+  .hh-tab.active { color: var(--hh-brand-300); border-bottom-color: var(--hh-brand-500); }
+
+  /* ── TOAST / ALERT ── */
+  .hh-alert-box {
+    display: flex;
+    gap: var(--hh-space-8);
+    padding: var(--hh-space-10) var(--hh-space-12);
+    border: 1px solid var(--hh-border-2);
+    background: var(--hh-surface-2);
+  }
+  .hh-alert-box--success { background: var(--hh-success-bg); border-color: var(--hh-success-bd); }
+  .hh-alert-box--warning { background: var(--hh-warning-bg); border-color: var(--hh-warning-bd); }
+  .hh-alert-box--danger  { background: var(--hh-danger-bg);  border-color: var(--hh-danger-bd); }
+  .hh-alert-box--info    { background: var(--hh-info-bg);    border-color: var(--hh-info-bd); }
+  .hh-alert-title {
+    font-size: var(--hh-fs-data);
+    font-weight: var(--hh-fw-semibold);
+    color: var(--hh-text-1);
+    margin-bottom: 2px;
+  }
+  .hh-alert-msg {
+    font-size: var(--hh-fs-data);
+    color: var(--hh-text-2);
+  }
+
+  /* ── PROGRESS BAR ── */
+  .hh-progress {
+    width: 100%;
+    background: var(--hh-surface-3);
+    height: 6px;
+    overflow: hidden;
+  }
+  .hh-progress-fill {
+    height: 100%;
+    background: var(--hh-brand-500);
+    transition: width var(--hh-dur-slow) var(--hh-ease-emphasized);
+  }
+  .hh-progress--sm { height: 3px; }
+  .hh-progress--lg { height: 10px; }
+
+  /* ── MODAL ── */
+  .hh-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--hh-z-modal);
+  }
+  .hh-modal {
+    background: var(--hh-surface-2);
+    border: 1px solid var(--hh-border-2);
+    box-shadow: var(--hh-elev-5);
+    width: 480px;
+    max-width: 90vw;
+  }
+  .hh-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--hh-space-12) var(--hh-space-14);
+    border-bottom: 1px solid var(--hh-border-1);
+  }
+  .hh-modal-title {
+    font-size: var(--hh-fs-h3);
+    font-weight: var(--hh-fw-semibold);
+    color: var(--hh-text-1);
+  }
+  .hh-modal-body {
+    padding: var(--hh-space-14);
+    color: var(--hh-text-2);
+    font-size: var(--hh-fs-body);
+  }
+  .hh-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--hh-space-6);
+    padding: var(--hh-space-12) var(--hh-space-14);
+    border-top: 1px solid var(--hh-border-1);
+  }
+
+  /* ── CHART CONTAINER ── */
+  .hh-chart-box {
+    background: var(--hh-surface-1);
+    border: 1px solid var(--hh-border-1);
+    padding: var(--hh-space-12);
+  }
+  .hh-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--hh-space-10);
+  }
+  .hh-chart-title {
+    font-size: var(--hh-fs-label);
+    font-weight: var(--hh-fw-semibold);
+    color: var(--hh-text-3);
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wide);
+  }
+
+  /* ── PATTERN: FILTER BAR ── */
+  .hh-filter-bar {
+    display: flex;
+    gap: var(--hh-space-6);
+    align-items: end;
+    flex-wrap: wrap;
+    padding: var(--hh-space-10);
+    background: var(--hh-surface-2);
+    border: 1px solid var(--hh-border-1);
+    margin-bottom: var(--hh-space-8);
+  }
+  .hh-filter-bar .hh-form-group { flex: 0 0 160px; }
+
+  /* ─── PATTERN: APP HEADER (mini, for the demo) ─── */
+  .hh-app-header {
+    background: #111;
+    border-bottom: 1px solid var(--hh-border-1);
+    padding: 0 var(--hh-space-12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--hh-header-h);
+  }
+  .hh-app-header-left { display: flex; align-items: center; gap: var(--hh-space-8); }
+  .hh-app-header-title { font-size: var(--hh-fs-body); font-weight: var(--hh-fw-semibold); letter-spacing: var(--hh-ls-wide); }
+  .hh-app-header-sub { font-size: var(--hh-fs-micro); color: var(--hh-text-3); margin-left: var(--hh-space-6); }
+  .hh-app-navbar {
+    background: var(--hh-surface-1);
+    border-bottom: 1px solid var(--hh-border-1);
+    display: flex;
+    padding: 0 var(--hh-space-12);
+    height: var(--hh-navbar-h);
+  }
+  .hh-app-nav-btn {
+    background: none; border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--hh-text-3);
+    font: inherit;
+    font-size: var(--hh-fs-nav);
+    font-weight: var(--hh-fw-medium);
+    padding: 0 var(--hh-space-12);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wide);
+  }
+  .hh-app-nav-btn:hover { color: var(--hh-brand-300); }
+  .hh-app-nav-btn.active { color: var(--hh-brand-300); border-bottom-color: var(--hh-brand-500); }
+
+  /* ─── ICONS (inline SVG sizing) ─── */
+  .hh-icon { width: var(--hh-icon-md); height: var(--hh-icon-md); flex-shrink: 0; }
+  .hh-icon--sm { width: var(--hh-icon-sm); height: var(--hh-icon-sm); }
+  .hh-icon--lg { width: var(--hh-icon-lg); height: var(--hh-icon-lg); }
+
+  /* ─── TOOLTIP ─── */
+  .hh-tooltip-wrap { position: relative; display: inline-block; }
+  .hh-tooltip {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--hh-surface-4);
+    color: var(--hh-text-1);
+    font-size: var(--hh-fs-micro);
+    font-weight: var(--hh-fw-medium);
+    padding: 4px 8px;
+    border: 1px solid var(--hh-border-2);
+    box-shadow: var(--hh-elev-3);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--hh-dur-quick) var(--hh-ease-standard);
+    z-index: var(--hh-z-tooltip);
+  }
+  .hh-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: var(--hh-surface-4);
+  }
+  .hh-tooltip-wrap:hover .hh-tooltip { opacity: 1; }
+
+  /* ─── DROPDOWN MENU ─── */
+  .hh-menu {
+    background: var(--hh-surface-4);
+    border: 1px solid var(--hh-border-2);
+    box-shadow: var(--hh-elev-3);
+    min-width: 180px;
+    padding: var(--hh-space-2) 0;
+    z-index: var(--hh-z-dropdown);
+  }
+  .hh-menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--hh-space-6);
+    padding: var(--hh-space-4) var(--hh-space-10);
+    font-size: var(--hh-fs-data);
+    color: var(--hh-text-2);
+    cursor: pointer;
+    transition: background var(--hh-dur-quick) var(--hh-ease-standard);
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+  }
+  .hh-menu-item:hover { background: var(--hh-state-hover); color: var(--hh-text-1); }
+  .hh-menu-item.danger { color: var(--hh-danger); }
+  .hh-menu-item.danger:hover { background: var(--hh-danger-bg); }
+  .hh-menu-divider { height: 1px; background: var(--hh-border-1); margin: var(--hh-space-2) 0; }
+  .hh-menu-label {
+    padding: var(--hh-space-2) var(--hh-space-10);
+    font-size: var(--hh-fs-micro);
+    font-weight: var(--hh-fw-semibold);
+    color: var(--hh-text-3);
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wider);
+  }
+
+  /* ─── BREADCRUMB ─── */
+  .hh-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--hh-space-3);
+    font-size: var(--hh-fs-data);
+    color: var(--hh-text-3);
+  }
+  .hh-breadcrumb a {
+    color: var(--hh-text-3);
+    text-decoration: none;
+    transition: color var(--hh-dur-quick) var(--hh-ease-standard);
+  }
+  .hh-breadcrumb a:hover { color: var(--hh-brand-300); }
+  .hh-breadcrumb-sep { color: var(--hh-text-4); user-select: none; }
+  .hh-breadcrumb-current { color: var(--hh-text-1); font-weight: var(--hh-fw-medium); }
+
+  /* ─── PAGINATION ─── */
+  .hh-pagination {
+    display: flex;
+    align-items: center;
+    gap: var(--hh-space-2);
+    font-size: var(--hh-fs-data);
+  }
+  .hh-page-btn {
+    min-width: 28px;
+    height: 28px;
+    padding: 0 var(--hh-space-3);
+    background: transparent;
+    border: 1px solid var(--hh-border-2);
+    color: var(--hh-text-2);
+    font-family: inherit;
+    font-size: var(--hh-fs-data);
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition: all var(--hh-dur-quick) var(--hh-ease-standard);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hh-page-btn:hover { background: var(--hh-state-hover); border-color: var(--hh-border-3); color: var(--hh-text-1); }
+  .hh-page-btn.active {
+    background: var(--hh-brand-500);
+    border-color: var(--hh-brand-500);
+    color: #fff;
+  }
+  .hh-page-btn[disabled] { opacity: 0.4; cursor: not-allowed; }
+  .hh-page-ellipsis { color: var(--hh-text-3); padding: 0 var(--hh-space-2); }
+  .hh-pagination-info {
+    margin-left: var(--hh-space-8);
+    color: var(--hh-text-3);
+    font-size: var(--hh-fs-micro);
+  }
+
+  /* ─── EMPTY STATE ─── */
+  .hh-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--hh-space-24) var(--hh-space-16);
+    text-align: center;
+    color: var(--hh-text-3);
+    gap: var(--hh-space-6);
+  }
+  .hh-empty-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--hh-text-4);
+    margin-bottom: var(--hh-space-2);
+  }
+  .hh-empty-title {
+    font-size: var(--hh-fs-h3);
+    font-weight: var(--hh-fw-semibold);
+    color: var(--hh-text-2);
+  }
+  .hh-empty-msg {
+    font-size: var(--hh-fs-data);
+    color: var(--hh-text-3);
+    max-width: 360px;
+    line-height: var(--hh-lh-relaxed);
+  }
+  .hh-empty-actions {
+    display: flex;
+    gap: var(--hh-space-4);
+    margin-top: var(--hh-space-6);
+  }
+
+  /* ─── SKELETON LOADER ─── */
+  @keyframes hh-skeleton-pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  .hh-skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--hh-surface-2) 0%,
+      var(--hh-surface-3) 50%,
+      var(--hh-surface-2) 100%
+    );
+    background-size: 200% 100%;
+    animation: hh-skeleton-shimmer 1.4s var(--hh-ease-standard) infinite;
+    display: block;
+  }
+  @keyframes hh-skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .hh-skeleton--text { height: 12px; margin-bottom: 6px; }
+  .hh-skeleton--title { height: 18px; width: 60%; margin-bottom: 10px; }
+  .hh-skeleton--kpi { height: 28px; width: 70%; margin-bottom: 6px; }
+  .hh-skeleton--line { height: 12px; }
+  .hh-skeleton--block { height: 80px; }
+
+  /* ─── DO / DON'T CALLOUTS ─── */
+  .hh-dodont {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--hh-border-1);
+    margin-top: var(--hh-space-8);
+  }
+  .hh-do, .hh-dont {
+    background: var(--hh-surface-1);
+    padding: var(--hh-space-12);
+    display: flex;
+    flex-direction: column;
+    gap: var(--hh-space-6);
+  }
+  .hh-do-label, .hh-dont-label {
+    display: flex;
+    align-items: center;
+    gap: var(--hh-space-3);
+    font-size: var(--hh-fs-micro);
+    font-weight: var(--hh-fw-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--hh-ls-wider);
+  }
+  .hh-do-label { color: var(--hh-success); }
+  .hh-dont-label { color: var(--hh-danger); }
+  .hh-do-label::before { content: '✓'; font-size: 14px; }
+  .hh-dont-label::before { content: '✕'; font-size: 14px; }
+  .hh-do-example, .hh-dont-example {
+    background: var(--hh-bg);
+    border: 1px solid var(--hh-border-1);
+    padding: var(--hh-space-10);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--hh-space-6);
+  }
+  .hh-do-text, .hh-dont-text {
+    font-size: var(--hh-fs-micro);
+    color: var(--hh-text-3);
+    line-height: var(--hh-lh-relaxed);
+  }
+
+  /* ═══════════════════════════════════════════════
+     UTILITIES
+     ═══════════════════════════════════════════════ */
+  .ds-row { display: flex; gap: var(--hh-space-8); flex-wrap: wrap; align-items: center; }
+  .ds-col { display: flex; flex-direction: column; gap: var(--hh-space-8); }
+  .ds-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--hh-space-8); }
+  .ds-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--hh-space-8); }
+  .ds-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--hh-space-8); }
+
+  /* Page sections */
+  .ds-page { display: none; }
+  .ds-page.active { display: block; animation: fadeIn var(--hh-dur-normal) var(--hh-ease-decelerate); }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  /* Mobile */
+  @media (max-width: 880px) {
+    .ds-app { grid-template-columns: 1fr; }
+    .ds-sidebar { position: static; height: auto; }
+    .ds-main { padding: var(--hh-space-12); }
+  }
+</style>
+</head>
+<body>
+
+<div class="ds-app">
+
+  <!-- ════════════════ SIDEBAR ════════════════ -->
+  <aside class="ds-sidebar">
+    <div class="ds-brand">
+      <div class="ds-brand-mark">HH</div>
+      <div class="ds-brand-name">SISTEMA DE DISEÑO</div>
+      <div class="ds-brand-sub">v1.0 · Oscuro</div>
+    </div>
+
+    <div class="ds-nav-section">Empezar</div>
+    <a class="ds-nav-link active" data-page="overview" href="#overview">Resumen</a>
+    <a class="ds-nav-link" data-page="principles" href="#principles">Principios</a>
+
+    <div class="ds-nav-section">Fundamentos</div>
+    <a class="ds-nav-link" data-page="color" href="#color">Color</a>
+    <a class="ds-nav-link" data-page="typography" href="#typography">Tipografía</a>
+    <a class="ds-nav-link" data-page="spacing" href="#spacing">Espaciado y Layout</a>
+    <a class="ds-nav-link" data-page="elevation" href="#elevation">Elevación</a>
+    <a class="ds-nav-link" data-page="motion" href="#motion">Movimiento</a>
+    <a class="ds-nav-link" data-page="iconography" href="#iconography">Iconografía</a>
+
+    <div class="ds-nav-section">Componentes</div>
+    <a class="ds-nav-link" data-page="buttons" href="#buttons">Botones</a>
+    <a class="ds-nav-link" data-page="forms" href="#forms">Formularios y Campos</a>
+    <a class="ds-nav-link" data-page="tables" href="#tables">Tablas</a>
+    <a class="ds-nav-link" data-page="kpis" href="#kpis">Tarjetas KPI</a>
+    <a class="ds-nav-link" data-page="badges" href="#badges">Etiquetas y Estados</a>
+    <a class="ds-nav-link" data-page="navigation" href="#navigation">Navegación</a>
+    <a class="ds-nav-link" data-page="modals" href="#modals">Modales y Alertas</a>
+    <a class="ds-nav-link" data-page="charts" href="#charts">Gráficos</a>
+    <a class="ds-nav-link" data-page="tooltips" href="#tooltips">Tooltips</a>
+    <a class="ds-nav-link" data-page="dropdowns" href="#dropdowns">Menús Desplegables</a>
+    <a class="ds-nav-link" data-page="breadcrumbs" href="#breadcrumbs">Migas de Pan</a>
+    <a class="ds-nav-link" data-page="pagination" href="#pagination">Paginación</a>
+    <a class="ds-nav-link" data-page="empty" href="#empty">Estados Vacíos</a>
+    <a class="ds-nav-link" data-page="skeleton" href="#skeleton">Skeletons de Carga</a>
+
+    <div class="ds-nav-section">Patrones</div>
+    <a class="ds-nav-link" data-page="dashboard" href="#dashboard">Layout de Dashboard</a>
+    <a class="ds-nav-link" data-page="formpattern" href="#formpattern">Layout de Formulario</a>
+    <a class="ds-nav-link" data-page="datalist" href="#datalist">Lista de Datos con Filtros</a>
+
+    <div class="ds-nav-section">Recursos</div>
+    <a class="ds-nav-link" data-page="tokens" href="#tokens">Referencia de Tokens</a>
+    <a class="ds-nav-link" data-page="contributing" href="#contributing">Contribuir</a>
+  </aside>
+
+  <!-- ════════════════ MAIN ════════════════ -->
+  <main class="ds-main">
+
+    <!-- ── OVERVIEW ── -->
+    <section class="ds-page active" id="page-overview">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">v1.0 · Abril 2026</div>
+        <h1 class="ds-page-title">Sistema de Diseño de Haber Holding</h1>
+        <p class="ds-page-desc">
+          Un lenguaje visual y de interacción unificado para todas las aplicaciones internas construidas en Haber Holding:
+          dashboards, herramientas de administración, consolas operativas y flujos de captura de datos. Construido sobre
+          la arquitectura de tokens de Material 3, expresado en la estética densa y orientada a información de HH.
+        </p>
+      </header>
+
+      <div class="ds-section">
+        <div class="hh-kpi-grid">
+          <div class="hh-kpi">
+            <div class="hh-kpi-label">Tokens</div>
+            <div class="hh-kpi-value">142</div>
+            <div class="hh-kpi-sub">color · tipo · espacio · movimiento</div>
+          </div>
+          <div class="hh-kpi">
+            <div class="hh-kpi-label">Componentes</div>
+            <div class="hh-kpi-value">24</div>
+            <div class="hh-kpi-sub">listos para producción</div>
+          </div>
+          <div class="hh-kpi">
+            <div class="hh-kpi-label">Patrones</div>
+            <div class="hh-kpi-value">12</div>
+            <div class="hh-kpi-sub">layouts componibles</div>
+          </div>
+          <div class="hh-kpi">
+            <div class="hh-kpi-label">Apps en Uso</div>
+            <div class="hh-kpi-value">3</div>
+            <div class="hh-kpi-sub">+ 5 en pipeline</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Qué incluye</h2>
+        <p class="ds-section-desc">
+          Cada sección de esta galería incluye ejemplos en vivo y el CSS / HTML exacto para copiar. La capa de tokens
+          (variables CSS, con prefijo <code style="font-family:var(--hh-font-mono);color:var(--hh-brand-300)">--hh-*</code>)
+          es la única fuente de verdad: cambia un token y todo lo que lo use se actualiza.
+        </p>
+        <div class="ds-grid-3">
+          <div class="hh-card">
+            <div class="hh-card-title">Fundamentos</div>
+            <p style="color:var(--hh-text-2);font-size:var(--hh-fs-data);line-height:1.6">
+              Color, tipografía, espaciado, elevación y movimiento. La capa atómica sobre la que se construye todo lo demás.
+            </p>
+          </div>
+          <div class="hh-card">
+            <div class="hh-card-title">Componentes</div>
+            <p style="color:var(--hh-text-2);font-size:var(--hh-fs-data);line-height:1.6">
+              Botones, inputs, tablas, tarjetas, modales, etiquetas. Cada uno con variantes, estados y código listo para copiar.
+            </p>
+          </div>
+          <div class="hh-card">
+            <div class="hh-card-title">Patrones</div>
+            <p style="color:var(--hh-text-2);font-size:var(--hh-fs-data);line-height:1.6">
+              Layouts compuestos: dashboards, formularios, listas de datos con filtros. Construye nuevas pantallas en minutos.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Cómo usar este sistema</h2>
+        <ol style="color:var(--hh-text-2);padding-left:20px;line-height:1.9;font-size:var(--hh-fs-body)">
+          <li>Copia el bloque de tokens <code style="font-family:var(--hh-font-mono);color:var(--hh-brand-300)">:root</code> de la página Referencia de Tokens en la hoja de estilos global de tu app.</li>
+          <li>Usa las clases <code style="font-family:var(--hh-font-mono);color:var(--hh-brand-300)">.hh-*</code> directamente, o envuélvelas en tu framework (React, Vue) como componentes.</li>
+          <li>Nunca hardcodees colores, espaciados o tamaños de fuente. Siempre referencia un token <code style="font-family:var(--hh-font-mono);color:var(--hh-brand-300)">--hh-*</code>.</li>
+          <li>Si necesitas un token que no existe, propónlo a través de la página Contribuir en lugar de crear soluciones locales.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ── PRINCIPLES ── -->
+    <section class="ds-page" id="page-principles">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Fundamentos</div>
+        <h1 class="ds-page-title">Principios de Diseño</h1>
+        <p class="ds-page-desc">Cuatro principios que guían cada decisión en las aplicaciones de HH.</p>
+      </header>
+
+      <div class="ds-section">
+        <div class="ds-grid-2">
+          <div class="hh-card" style="padding:var(--hh-space-16)">
+            <div style="font-size:var(--hh-fs-h3);font-weight:var(--hh-fw-semibold);color:var(--hh-brand-300);margin-bottom:var(--hh-space-6)">01 · Densidad de Información</div>
+            <p style="color:var(--hh-text-2);font-size:var(--hh-fs-body);line-height:1.7">
+              Las apps de HH sirven a operadores y analistas que necesitan ver mucho a la vez. Optimizamos por información
+              por pulgada cuadrada, no por espacio en blanco. Los tamaños de tipografía son compactos, el padding es contenido,
+              y el chrome es mínimo. Cada pixel se gana su lugar.
+            </p>
+          </div>
+          <div class="hh-card" style="padding:var(--hh-space-16)">
+            <div style="font-size:var(--hh-fs-h3);font-weight:var(--hh-fw-semibold);color:var(--hh-brand-300);margin-bottom:var(--hh-space-6)">02 · Silencioso, Luego Fuerte</div>
+            <p style="color:var(--hh-text-2);font-size:var(--hh-fs-body);line-height:1.7">
+              La interfaz es principalmente en escala de grises y silenciosa. El color se reserva para significado: azul de marca
+              para acción, verde/amarillo/rojo para estado. Cuando algo se vuelve colorido, importa. Nunca decoramos.
+            </p>
+          </div>
+          <div class="hh-card" style="padding:var(--hh-space-16)">
+            <div style="font-size:var(--hh-fs-h3);font-weight:var(--hh-fw-semibold);color:var(--hh-brand-300);margin-bottom:var(--hh-space-6)">03 · Filoso y Geométrico</div>
+            <p style="color:var(--hh-text-2);font-size:var(--hh-fs-body);line-height:1.7">
+              Esquinas filosas por defecto. Sin botones redondeados, sin sombras suaves en cada tarjeta. La estética se acerca más a
+              una Bloomberg Terminal que a un SaaS de consumo: preciso, técnico y sin sentimentalismos.
+            </p>
+          </div>
+          <div class="hh-card" style="padding:var(--hh-space-16)">
+            <div style="font-size:var(--hh-fs-h3);font-weight:var(--hh-fw-semibold);color:var(--hh-brand-300);margin-bottom:var(--hh-space-6)">04 · Consistente en Todo HH</div>
+            <p style="color:var(--hh-text-2);font-size:var(--hh-fs-body);line-height:1.7">
+              Un usuario que se mueve entre Compensaciones, el Dashboard de CEDIS y el Asistente de Procurement debe sentir
+              que está dentro de un solo producto. Misma navegación, mismos botones, mismos colores de estado. La familiaridad es una característica.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── COLOR ── -->
+    <section class="ds-page" id="page-color">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Fundamentos</div>
+        <h1 class="ds-page-title">Color</h1>
+        <p class="ds-page-desc">
+          Una paleta contenida construida sobre una columna neutra profunda, con el azul de marca HH y cuatro colores semánticos
+          de estado. El color siempre tiene significado, nunca es decorativo.
+        </p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Superficies y Fondos</h2>
+        <p class="ds-section-desc">Cinco superficies neutras definen la profundidad en el tema oscuro. Números más altos = más cerca del usuario.</p>
+        <div class="ds-color-grid">
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#0c0c0c"></div><div class="ds-color-name">Fondo</div><div class="ds-color-token">--hh-bg</div><div class="ds-color-hex">#0c0c0c</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#141414"></div><div class="ds-color-name">Superficie 1</div><div class="ds-color-token">--hh-surface-1</div><div class="ds-color-hex">#141414</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#1a1a1a"></div><div class="ds-color-name">Superficie 2</div><div class="ds-color-token">--hh-surface-2</div><div class="ds-color-hex">#1a1a1a</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#222222"></div><div class="ds-color-name">Superficie 3</div><div class="ds-color-token">--hh-surface-3</div><div class="ds-color-hex">#222222</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#2a2a2a"></div><div class="ds-color-name">Superficie 4</div><div class="ds-color-token">--hh-surface-4</div><div class="ds-color-hex">#2a2a2a</div></div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Rampa de Marca</h2>
+        <p class="ds-section-desc">Una rampa monocromática de 9 pasos construida alrededor del azul de HH. Usa el 500 como color principal de acción.</p>
+        <div class="ds-brand-ramp">
+          <div class="ds-brand-step" style="background:#e8eef1;color:#000">50<span>#e8eef1</span></div>
+          <div class="ds-brand-step" style="background:#c5d2da;color:#000">100<span>#c5d2da</span></div>
+          <div class="ds-brand-step" style="background:#9fb5c1;color:#000">200<span>#9fb5c1</span></div>
+          <div class="ds-brand-step" style="background:#80a4b3;color:#000">300<span>#80a4b3</span></div>
+          <div class="ds-brand-step" style="background:#5a8a9e;color:#fff">400<span>#5a8a9e</span></div>
+          <div class="ds-brand-step" style="background:#41768d;color:#fff">500<span>#41768d</span></div>
+          <div class="ds-brand-step" style="background:#2a5d75;color:#fff">600<span>#2a5d75</span></div>
+          <div class="ds-brand-step" style="background:#014867;color:#fff">700<span>#014867</span></div>
+          <div class="ds-brand-step" style="background:#013349;color:#fff">800<span>#013349</span></div>
+        </div>
+        <p style="font-size:var(--hh-fs-micro);color:var(--hh-text-3);margin-top:var(--hh-space-6)">Acción principal: <strong style="color:var(--hh-brand-300)">brand-500</strong> · Hover: <strong style="color:var(--hh-brand-300)">brand-400</strong> · Activo: <strong style="color:var(--hh-brand-300)">brand-600</strong> · Texto de acento en oscuro: <strong style="color:var(--hh-brand-300)">brand-300</strong></p>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Colores Semánticos / de Estado</h2>
+        <p class="ds-section-desc">Cuatro colores de estado para feedback del sistema. Cada uno tiene una base, un tinte de fondo y un tinte de borde.</p>
+        <div class="ds-color-grid">
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#44aa99"></div><div class="ds-color-name">Éxito</div><div class="ds-color-token">--hh-success</div><div class="ds-color-hex">#44aa99</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#ddaa44"></div><div class="ds-color-name">Advertencia</div><div class="ds-color-token">--hh-warning</div><div class="ds-color-hex">#ddaa44</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#e08a3c"></div><div class="ds-color-name">Alerta</div><div class="ds-color-token">--hh-alert</div><div class="ds-color-hex">#e08a3c</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#dd5555"></div><div class="ds-color-name">Peligro</div><div class="ds-color-token">--hh-danger</div><div class="ds-color-hex">#dd5555</div></div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Paleta para Visualización de Datos</h2>
+        <p class="ds-section-desc">8 colores categóricos para gráficos, diseñados para ser distinguibles en fondos oscuros y reutilizar tonos existentes de marca/estado cuando sea posible.</p>
+        <div class="ds-color-grid">
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#41768d"></div><div class="ds-color-name">viz-1</div><div class="ds-color-hex">#41768d</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#80a4b3"></div><div class="ds-color-name">viz-2</div><div class="ds-color-hex">#80a4b3</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#44aa99"></div><div class="ds-color-name">viz-3</div><div class="ds-color-hex">#44aa99</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#ddaa44"></div><div class="ds-color-name">viz-4</div><div class="ds-color-hex">#ddaa44</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#e08a3c"></div><div class="ds-color-name">viz-5</div><div class="ds-color-hex">#e08a3c</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#c07a8a"></div><div class="ds-color-name">viz-6</div><div class="ds-color-hex">#c07a8a</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#8a6fa0"></div><div class="ds-color-name">viz-7</div><div class="ds-color-hex">#8a6fa0</div></div>
+          <div class="ds-color-swatch"><div class="ds-color-block" style="background:#6b8e9b"></div><div class="ds-color-name">viz-8</div><div class="ds-color-hex">#6b8e9b</div></div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Colores de Texto</h2>
+        <div class="ds-demo">
+          <div style="font-size:var(--hh-fs-h2);color:var(--hh-text-1);margin-bottom:var(--hh-space-3)">Texto primario — --hh-text-1 (#ffffff)</div>
+          <div style="font-size:var(--hh-fs-body);color:var(--hh-text-2);margin-bottom:var(--hh-space-3)">Texto secundario — --hh-text-2 (#cccccc) · texto de cuerpo por defecto</div>
+          <div style="font-size:var(--hh-fs-body);color:var(--hh-text-3);margin-bottom:var(--hh-space-3)">Texto terciario — --hh-text-3 (#999999) · etiquetas, captions, metadatos</div>
+          <div style="font-size:var(--hh-fs-body);color:var(--hh-text-4)">Texto deshabilitado — --hh-text-4 (#666666) · solo estados deshabilitados</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TYPOGRAPHY ── -->
+    <section class="ds-page" id="page-typography">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Fundamentos</div>
+        <h1 class="ds-page-title">Tipografía</h1>
+        <p class="ds-page-desc">
+          Inter para todo. JetBrains Mono para código, IDs y números tabulares. La escala tipográfica es compacta:
+          diseñada para UIs de datos densos donde el espacio vertical es valioso.
+        </p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Escala Tipográfica</h2>
+        <div class="ds-demo">
+          <div class="ds-type-row"><div class="ds-type-token">--hh-fs-display</div><div class="ds-type-meta">28px / 600</div><div class="ds-type-sample" style="font-size:28px;font-weight:600;letter-spacing:-0.01em">Display · Hero de página</div></div>
+          <div class="ds-type-row"><div class="ds-type-token">--hh-fs-h1</div><div class="ds-type-meta">20px / 600</div><div class="ds-type-sample" style="font-size:20px;font-weight:600">Encabezado 1 · Título de página</div></div>
+          <div class="ds-type-row"><div class="ds-type-token">--hh-fs-h2</div><div class="ds-type-meta">16px / 600</div><div class="ds-type-sample" style="font-size:16px;font-weight:600">Encabezado 2 · Sección</div></div>
+          <div class="ds-type-row"><div class="ds-type-token">--hh-fs-h3</div><div class="ds-type-meta">14px / 600</div><div class="ds-type-sample" style="font-size:14px;font-weight:600">Encabezado 3 · Título de tarjeta</div></div>
+          <div class="ds-type-row"><div class="ds-type-token">--hh-fs-kpi</div><div class="ds-type-meta">22px / 300</div><div class="ds-type-sample" style="font-size:22px;font-weight:300">$1,247,580 · Valor de KPI</div></div>
+          <div class="ds-type-row"><div class="ds-type-token">--hh-fs-body</div><div class="ds-type-meta">13px / 400</div><div class="ds-type-sample" style="font-size:13px">Texto de cuerpo — el predeterminado para párrafos y copy general de UI.</div></div>
+          <div class="ds-type-row"><div class="ds-type-token">--hh-fs-data</div><div class="ds-type-meta">12px / 400</div><div class="ds-type-sample" style="font-size:12px">Texto de datos — celdas de tablas, listas densas, contenido secundario.</div></div>
+          <div class="ds-type-row"><div class="ds-type-token">--hh-fs-nav</div><div class="ds-type-meta">11px / 500</div><div class="ds-type-sample" style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em">NAV / ETIQUETA DE BOTÓN</div></div>
+          <div class="ds-type-row"><div class="ds-type-token">--hh-fs-label</div><div class="ds-type-meta">10px / 500</div><div class="ds-type-sample" style="font-size:10px;text-transform:uppercase;letter-spacing:0.05em">ETIQUETA DE FORMULARIO · CAPTION</div></div>
+          <div class="ds-type-row"><div class="ds-type-token">--hh-fs-micro</div><div class="ds-type-meta">9px / 600</div><div class="ds-type-sample" style="font-size:9px;text-transform:uppercase;letter-spacing:0.1em">ETIQUETA · MICROCOPY</div></div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Familias Tipográficas</h2>
+        <div class="ds-grid-2">
+          <div class="hh-card">
+            <div class="hh-card-title">Sans · Inter</div>
+            <div style="font-family:var(--hh-font-sans);font-size:32px;font-weight:300">Aa Bb Cc</div>
+            <div style="margin-top:var(--hh-space-6);font-size:var(--hh-fs-body);color:var(--hh-text-2)">300 · 400 · 500 · 600 · 700</div>
+            <div style="font-size:var(--hh-fs-micro);color:var(--hh-text-3);margin-top:var(--hh-space-3);font-family:var(--hh-font-mono)">--hh-font-sans</div>
+          </div>
+          <div class="hh-card">
+            <div class="hh-card-title">Mono · JetBrains Mono</div>
+            <div style="font-family:var(--hh-font-mono);font-size:32px;font-weight:500">Aa Bb 0123</div>
+            <div style="margin-top:var(--hh-space-6);font-size:var(--hh-fs-body);color:var(--hh-text-2)">400 · 500 · 600</div>
+            <div style="font-size:var(--hh-fs-micro);color:var(--hh-text-3);margin-top:var(--hh-space-3);font-family:var(--hh-font-mono)">--hh-font-mono</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Números Tabulares</h2>
+        <p class="ds-section-desc">Siempre usa <code style="font-family:var(--hh-font-mono);color:var(--hh-brand-300)">font-variant-numeric: tabular-nums</code> para KPIs y celdas de tabla con números: asegura la alineación de columnas.</p>
+        <div class="ds-demo">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--hh-space-12)">
+            <div>
+              <div style="font-size:var(--hh-fs-label);color:var(--hh-text-3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--hh-space-3)">Por defecto (proporcional)</div>
+              <div style="font-size:18px;color:var(--hh-text-1)">$1,247,580.00<br>$985,232.50<br>$11,008.75</div>
+            </div>
+            <div>
+              <div style="font-size:var(--hh-fs-label);color:var(--hh-text-3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--hh-space-3)">Tabular</div>
+              <div style="font-size:18px;color:var(--hh-text-1);font-variant-numeric:tabular-nums">$1,247,580.00<br>$985,232.50<br>$11,008.75</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SPACING ── -->
+    <section class="ds-page" id="page-spacing">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Fundamentos</div>
+        <h1 class="ds-page-title">Espaciado y Layout</h1>
+        <p class="ds-page-desc">Una escala de espaciado con base de 4px, diseñada para layouts densos. La mayoría de componentes usan space-3 a space-12 internamente.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Escala</h2>
+        <div class="ds-demo">
+          <div class="ds-space-row"><div class="ds-space-token">--hh-space-1</div><div class="ds-space-value">2px</div><div class="ds-space-bar" style="width:2px"></div></div>
+          <div class="ds-space-row"><div class="ds-space-token">--hh-space-2</div><div class="ds-space-value">4px</div><div class="ds-space-bar" style="width:4px"></div></div>
+          <div class="ds-space-row"><div class="ds-space-token">--hh-space-3</div><div class="ds-space-value">6px</div><div class="ds-space-bar" style="width:6px"></div></div>
+          <div class="ds-space-row"><div class="ds-space-token">--hh-space-4</div><div class="ds-space-value">8px</div><div class="ds-space-bar" style="width:8px"></div></div>
+          <div class="ds-space-row"><div class="ds-space-token">--hh-space-5</div><div class="ds-space-value">10px</div><div class="ds-space-bar" style="width:10px"></div></div>
+          <div class="ds-space-row"><div class="ds-space-token">--hh-space-6</div><div class="ds-space-value">12px</div><div class="ds-space-bar" style="width:12px"></div></div>
+          <div class="ds-space-row"><div class="ds-space-token">--hh-space-8</div><div class="ds-space-value">16px</div><div class="ds-space-bar" style="width:16px"></div></div>
+          <div class="ds-space-row"><div class="ds-space-token">--hh-space-10</div><div class="ds-space-value">20px</div><div class="ds-space-bar" style="width:20px"></div></div>
+          <div class="ds-space-row"><div class="ds-space-token">--hh-space-12</div><div class="ds-space-value">24px</div><div class="ds-space-bar" style="width:24px"></div></div>
+          <div class="ds-space-row"><div class="ds-space-token">--hh-space-16</div><div class="ds-space-value">32px</div><div class="ds-space-bar" style="width:32px"></div></div>
+          <div class="ds-space-row"><div class="ds-space-token">--hh-space-20</div><div class="ds-space-value">40px</div><div class="ds-space-bar" style="width:40px"></div></div>
+          <div class="ds-space-row"><div class="ds-space-token">--hh-space-24</div><div class="ds-space-value">48px</div><div class="ds-space-bar" style="width:48px"></div></div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Uso</h2>
+        <div class="ds-grid-2">
+          <div class="hh-card">
+            <div class="hh-card-title">Internos de Componentes</div>
+            <p style="font-size:var(--hh-fs-data);color:var(--hh-text-2);line-height:1.7">
+              Buttons: <code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">space-12</code> padding horizontal · <code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">space-4</code> gap<br>
+              Tarjetas: <code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">space-12</code> padding<br>
+              Inputs: <code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">space-8</code> padding horizontal<br>
+              Celdas de tabla: <code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">space-6 / space-8</code>
+            </p>
+          </div>
+          <div class="hh-card">
+            <div class="hh-card-title">Layout</div>
+            <p style="font-size:var(--hh-fs-data);color:var(--hh-text-2);line-height:1.7">
+              Padding de página: <code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">space-16 / space-20</code><br>
+              Gap entre secciones: <code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">space-16 / space-20</code><br>
+              Gap de grid de tarjetas: <code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">1px (border-driven)</code> or <code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">space-8</code><br>
+              Gap entre campos de formulario: <code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">space-8 / space-12</code>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ELEVATION ── -->
+    <section class="ds-page" id="page-elevation">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Fundamentos</div>
+        <h1 class="ds-page-title">Elevación</h1>
+        <p class="ds-page-desc">
+          En fondos oscuros, la elevación viene de una combinación de <strong>luminosidad de superficie</strong> y
+          <strong>sombra</strong>. Usamos superficies 1–5 para apilar, y sombras solo para elementos flotantes (modales, desplegables).
+        </p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Pila de Superficies</h2>
+        <p class="ds-section-desc">Para UI estática, prefiere elevar la luminosidad de la superficie en lugar de añadir sombras.</p>
+        <div class="ds-elev-grid">
+          <div class="ds-elev-card" style="background:#0c0c0c"><div class="lvl">surface-0 / bg</div><div class="desc">Fondo de página</div></div>
+          <div class="ds-elev-card" style="background:#141414"><div class="lvl">surface-1</div><div class="desc">Tarjetas, paneles</div></div>
+          <div class="ds-elev-card" style="background:#1a1a1a"><div class="lvl">surface-2</div><div class="desc">Encabezados de tabla, elevados</div></div>
+          <div class="ds-elev-card" style="background:#222222"><div class="lvl">surface-3</div><div class="desc">Hover, fondo de inputs</div></div>
+          <div class="ds-elev-card" style="background:#2a2a2a"><div class="lvl">surface-4</div><div class="desc">Modales, menús</div></div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Tokens de Sombra</h2>
+        <p class="ds-section-desc">Solo para UI flotante: modales, desplegables, popovers, tooltips.</p>
+        <div class="ds-elev-grid">
+          <div class="ds-elev-card" style="box-shadow:none"><div class="lvl">elev-0</div><div class="desc">Estático</div></div>
+          <div class="ds-elev-card" style="box-shadow:0 1px 2px rgba(0,0,0,0.4)"><div class="lvl">elev-1</div><div class="desc">Elevación sutil</div></div>
+          <div class="ds-elev-card" style="box-shadow:0 2px 4px rgba(0,0,0,0.5),0 1px 2px rgba(0,0,0,0.3)"><div class="lvl">elev-2</div><div class="desc">Desplegable</div></div>
+          <div class="ds-elev-card" style="box-shadow:0 4px 8px rgba(0,0,0,0.5),0 2px 4px rgba(0,0,0,0.4)"><div class="lvl">elev-3</div><div class="desc">Popover</div></div>
+          <div class="ds-elev-card" style="box-shadow:0 8px 16px rgba(0,0,0,0.6),0 4px 8px rgba(0,0,0,0.4)"><div class="lvl">elev-4</div><div class="desc">Modal</div></div>
+          <div class="ds-elev-card" style="box-shadow:0 16px 32px rgba(0,0,0,0.7),0 8px 16px rgba(0,0,0,0.5)"><div class="lvl">elev-5</div><div class="desc">Diálogo / hoja</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MOTION ── -->
+    <section class="ds-page" id="page-motion">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Fundamentos</div>
+        <h1 class="ds-page-title">Movimiento</h1>
+        <p class="ds-page-desc">
+          El movimiento es funcional, no decorativo. Curvas de easing derivadas de M3, duraciones medidas en milisegundos.
+          Lo predeterminado es rápido y sutil: las animaciones deben sentirse como que la UI está respondiendo, no actuando.
+        </p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Curvas de Easing</h2>
+        <div class="ds-grid-2">
+          <div class="hh-card"><div class="hh-card-title">--hh-ease-standard</div><div style="font-family:var(--hh-font-mono);font-size:var(--hh-fs-data);color:var(--hh-text-2)">cubic-bezier(0.2, 0, 0, 1)</div><p style="font-size:var(--hh-fs-micro);color:var(--hh-text-3);margin-top:var(--hh-space-3)">Predeterminado para la mayoría de transiciones: entrada y salida.</p></div>
+          <div class="hh-card"><div class="hh-card-title">--hh-ease-emphasized</div><div style="font-family:var(--hh-font-mono);font-size:var(--hh-fs-data);color:var(--hh-text-2)">cubic-bezier(0.3, 0, 0, 1)</div><p style="font-size:var(--hh-fs-micro);color:var(--hh-text-3);margin-top:var(--hh-space-3)">Para cambios de estado que necesitan atención: modales, drawers.</p></div>
+          <div class="hh-card"><div class="hh-card-title">--hh-ease-decelerate</div><div style="font-family:var(--hh-font-mono);font-size:var(--hh-fs-data);color:var(--hh-text-2)">cubic-bezier(0, 0, 0, 1)</div><p style="font-size:var(--hh-fs-micro);color:var(--hh-text-3);margin-top:var(--hh-space-3)">Elementos entrando en la pantalla.</p></div>
+          <div class="hh-card"><div class="hh-card-title">--hh-ease-accelerate</div><div style="font-family:var(--hh-font-mono);font-size:var(--hh-fs-data);color:var(--hh-text-2)">cubic-bezier(0.3, 0, 1, 1)</div><p style="font-size:var(--hh-fs-micro);color:var(--hh-text-3);margin-top:var(--hh-space-3)">Elementos saliendo de la pantalla.</p></div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Duraciones</h2>
+        <div class="ds-demo">
+          <table class="hh-table">
+            <thead><tr><th>Token</th><th>Valor</th><th>Uso</th></tr></thead>
+            <tbody>
+              <tr><td><code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">--hh-dur-instant</code></td><td class="num">50ms</td><td>Cambios de estado de color/borde</td></tr>
+              <tr><td><code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">--hh-dur-fast</code></td><td class="num">100ms</td><td>Transiciones de hover</td></tr>
+              <tr><td><code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">--hh-dur-quick</code></td><td class="num">150ms</td><td>Estados de botón (predeterminado)</td></tr>
+              <tr><td><code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">--hh-dur-normal</code></td><td class="num">200ms</td><td>Transiciones de página/tab</td></tr>
+              <tr><td><code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">--hh-dur-slow</code></td><td class="num">300ms</td><td>Entrada/salida de modal, llenado de progreso</td></tr>
+              <tr><td><code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">--hh-dur-slower</code></td><td class="num">400ms</td><td>Animaciones de drawer/hoja</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Capas de Estado (concepto de M3)</h2>
+        <p class="ds-section-desc">Los estados de hover, focus y presionado se expresan como overlays semi-transparentes, no como colores separados. Así funcionan de forma consistente sobre cualquier fondo.</p>
+        <div class="ds-demo ds-demo--flex">
+          <button class="hh-btn hh-btn--secondary">Pasa el cursor</button>
+          <code style="color:var(--hh-text-3);font-family:var(--hh-font-mono);font-size:var(--hh-fs-micro)">--hh-state-hover: rgba(255,255,255,0.04)</code>
+          <code style="color:var(--hh-text-3);font-family:var(--hh-font-mono);font-size:var(--hh-fs-micro)">--hh-state-press: rgba(255,255,255,0.12)</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ICONOGRAPHY ── -->
+    <section class="ds-page" id="page-iconography">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Fundamentos</div>
+        <h1 class="ds-page-title">Iconografía</h1>
+        <p class="ds-page-desc">
+          Usamos <strong>Lucide</strong> como librería de iconos: open source, completa y visualmente consistente
+          con nuestra estética filosa. 16px es el tamaño predeterminado; 14px para UIs densas; 20px para énfasis.
+        </p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Tamaños</h2>
+        <div class="ds-demo ds-demo--flex">
+          <div style="text-align:center"><svg class="hh-icon hh-icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div style="font-size:var(--hh-fs-micro);color:var(--hh-text-3);margin-top:var(--hh-space-2)">14px · sm</div></div>
+          <div style="text-align:center"><svg class="hh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div style="font-size:var(--hh-fs-micro);color:var(--hh-text-3);margin-top:var(--hh-space-2)">16px · md (predeterminado)</div></div>
+          <div style="text-align:center"><svg class="hh-icon hh-icon--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div style="font-size:var(--hh-fs-micro);color:var(--hh-text-3);margin-top:var(--hh-space-2)">20px · lg</div></div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Iconos Comunes</h2>
+        <div class="ds-demo" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:var(--hh-space-12)">
+          <div style="text-align:center;color:var(--hh-text-2)"><svg class="hh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg><div style="font-size:var(--hh-fs-micro);margin-top:var(--hh-space-2)">dashboard</div></div>
+          <div style="text-align:center;color:var(--hh-text-2)"><svg class="hh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><div style="font-size:var(--hh-fs-micro);margin-top:var(--hh-space-2)">buscar</div></div>
+          <div style="text-align:center;color:var(--hh-text-2)"><svg class="hh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg><div style="font-size:var(--hh-fs-micro);margin-top:var(--hh-space-2)">filtro</div></div>
+          <div style="text-align:center;color:var(--hh-text-2)"><svg class="hh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><div style="font-size:var(--hh-fs-micro);margin-top:var(--hh-space-2)">descargar</div></div>
+          <div style="text-align:center;color:var(--hh-text-2)"><svg class="hh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><div style="font-size:var(--hh-fs-micro);margin-top:var(--hh-space-2)">añadir</div></div>
+          <div style="text-align:center;color:var(--hh-text-2)"><svg class="hh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><div style="font-size:var(--hh-fs-micro);margin-top:var(--hh-space-2)">editar</div></div>
+          <div style="text-align:center;color:var(--hh-text-2)"><svg class="hh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><div style="font-size:var(--hh-fs-micro);margin-top:var(--hh-space-2)">eliminar</div></div>
+          <div style="text-align:center;color:var(--hh-text-2)"><svg class="hh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><div style="font-size:var(--hh-fs-micro);margin-top:var(--hh-space-2)">ajustes</div></div>
+          <div style="text-align:center;color:var(--hh-text-2)"><svg class="hh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div style="font-size:var(--hh-fs-micro);margin-top:var(--hh-space-2)">alerta</div></div>
+          <div style="text-align:center;color:var(--hh-text-2)"><svg class="hh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div style="font-size:var(--hh-fs-micro);margin-top:var(--hh-space-2)">check</div></div>
+          <div style="text-align:center;color:var(--hh-text-2)"><svg class="hh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><div style="font-size:var(--hh-fs-micro);margin-top:var(--hh-space-2)">cerrar</div></div>
+          <div style="text-align:center;color:var(--hh-text-2)"><svg class="hh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><div style="font-size:var(--hh-fs-micro);margin-top:var(--hh-space-2)">chevron-abajo</div></div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Instalación</h2>
+        <div class="ds-code"><span class="c">// React</span>
+<span class="k">npm install</span> lucide-react
+
+<span class="k">import</span> { Search, Filter, Download } <span class="k">from</span> <span class="s">'lucide-react'</span>;
+
+<span class="c">// Use with .hh-icon class for sizing</span>
+&lt;Search className=<span class="s">"hh-icon"</span> /&gt;</div>
+      </div>
+    </section>
+
+    <!-- ── BUTTONS ── -->
+    <section class="ds-page" id="page-buttons">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Botones</h1>
+        <p class="ds-page-desc">Cuatro variantes × tres tamaños. Primario para la acción principal de la pantalla, secundario para todo lo demás, ghost para acciones de baja prioridad, peligro para las destructivas.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Variantes</h2>
+        <div class="ds-demo ds-demo--flex">
+          <button class="hh-btn hh-btn--primary">Acción Principal</button>
+          <button class="hh-btn hh-btn--secondary">Secundario</button>
+          <button class="hh-btn hh-btn--ghost">Ghost</button>
+          <button class="hh-btn hh-btn--danger">Eliminar</button>
+          <button class="hh-btn hh-btn--primary" disabled>Deshabilitado</button>
+        </div>
+        <div class="ds-code">&lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-btn hh-btn--primary"</span>&gt;Primary Action&lt;/<span class="k">button</span>&gt;
+&lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-btn hh-btn--secondary"</span>&gt;Secondary&lt;/<span class="k">button</span>&gt;
+&lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-btn hh-btn--ghost"</span>&gt;Ghost&lt;/<span class="k">button</span>&gt;
+&lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-btn hh-btn--danger"</span>&gt;Delete&lt;/<span class="k">button</span>&gt;</div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Tamaños</h2>
+        <div class="ds-demo ds-demo--flex">
+          <button class="hh-btn hh-btn--primary hh-btn--sm">Pequeño</button>
+          <button class="hh-btn hh-btn--primary">Predeterminado</button>
+          <button class="hh-btn hh-btn--primary hh-btn--lg">Grande</button>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Con Iconos</h2>
+        <div class="ds-demo ds-demo--flex">
+          <button class="hh-btn hh-btn--primary"><svg class="hh-icon hh-icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nuevo Registro</button>
+          <button class="hh-btn hh-btn--secondary"><svg class="hh-icon hh-icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Exportar</button>
+          <button class="hh-btn hh-btn--icon hh-btn--secondary"><svg class="hh-icon hh-icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+        </div>
+      </div>
+      <div class="ds-section">
+        <h2 class="ds-section-title">Sí y No</h2>
+        <div class="hh-dodont">
+          <div class="hh-do">
+            <div class="hh-do-label">SÍ</div>
+            <div class="hh-do-example">
+              <button class="hh-btn hh-btn--secondary">Cancelar</button>
+              <button class="hh-btn hh-btn--primary">Guardar Cambios</button>
+            </div>
+            <div class="hh-do-text">Una acción primaria por pantalla. Usa secundario para la ruta de cancelar/volver. Mantén las etiquetas cortas y empezando con verbo.</div>
+          </div>
+          <div class="hh-dont">
+            <div class="hh-dont-label">NO</div>
+            <div class="hh-dont-example">
+              <button class="hh-btn hh-btn--primary">Guardar</button>
+              <button class="hh-btn hh-btn--primary">Enviar</button>
+              <button class="hh-btn hh-btn--danger">Eliminar</button>
+            </div>
+            <div class="hh-dont-text">No apiles múltiples botones primarios en el mismo grupo: el usuario no sabrá cuál acción es la recomendada. No mezcles primario con destructivo sin separación.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FORMS ── -->
+    <section class="ds-page" id="page-forms">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Formularios y Campos</h1>
+        <p class="ds-page-desc">Inputs compactos y oscuros con bordes filosos. Las etiquetas son microcopy en mayúsculas arriba de cada campo.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Campo de Texto</h2>
+        <div class="ds-demo">
+          <div style="max-width:320px;display:flex;flex-direction:column;gap:var(--hh-space-12)">
+            <div class="hh-form-group">
+              <label class="hh-label">Código de Tienda</label>
+              <input class="hh-input" placeholder="e.g. R048" />
+              <div class="hh-help">Identificador de tienda de 3–5 caracteres</div>
+            </div>
+            <div class="hh-form-group">
+              <label class="hh-label">Email (con error)</label>
+              <input class="hh-input hh-input--error" value="not-an-email" />
+              <div class="hh-help hh-help--error">Por favor ingresa un email válido</div>
+            </div>
+          </div>
+        </div>
+        <div class="ds-code">&lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-form-group"</span>&gt;
+  &lt;<span class="k">label</span> <span class="a">class</span>=<span class="s">"hh-label"</span>&gt;Store Code&lt;/<span class="k">label</span>&gt;
+  &lt;<span class="k">input</span> <span class="a">class</span>=<span class="s">"hh-input"</span> <span class="a">placeholder</span>=<span class="s">"e.g. R048"</span> /&gt;
+  &lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-help"</span>&gt;Identificador de tienda de 3–5 caracteres&lt;/<span class="k">div</span>&gt;
+&lt;/<span class="k">div</span>&gt;</div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Select y Textarea</h2>
+        <div class="ds-demo">
+          <div style="max-width:320px;display:flex;flex-direction:column;gap:var(--hh-space-12)">
+            <div class="hh-form-group">
+              <label class="hh-label">Cluster</label>
+              <select class="hh-select">
+                <option>Premium</option>
+                <option>Standard</option>
+                <option>Express</option>
+              </select>
+            </div>
+            <div class="hh-form-group">
+              <label class="hh-label">Notas</label>
+              <textarea class="hh-textarea" placeholder="Comentarios opcionales..."></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Checkbox y Radio</h2>
+        <div class="ds-demo ds-demo--flex">
+          <label class="hh-checkbox"><input type="checkbox" checked> Active</label>
+          <label class="hh-checkbox"><input type="checkbox"> Incluir archivados</label>
+          <label class="hh-radio"><input type="radio" name="r" checked> Monthly</label>
+          <label class="hh-radio"><input type="radio" name="r"> Quarterly</label>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Sí y No</h2>
+        <div class="hh-dodont">
+          <div class="hh-do">
+            <div class="hh-do-label">SÍ</div>
+            <div class="hh-do-example" style="display:block">
+              <div class="hh-form-group">
+                <label class="hh-label">Código de Tienda</label>
+                <input class="hh-input" placeholder="e.g. R048" />
+                <div class="hh-help">Identificador de tienda de 3–5 caracteres</div>
+              </div>
+            </div>
+            <div class="hh-do-text">Etiqueta arriba del campo, microcopy abajo como guía, placeholder para valores de ejemplo. Siempre etiquetas en mayúsculas con letter-spacing.</div>
+          </div>
+          <div class="hh-dont">
+            <div class="hh-dont-label">NO</div>
+            <div class="hh-dont-example" style="display:block">
+              <div style="display:flex;gap:8px;align-items:center">
+                <span style="font-size:13px;color:#ccc">Store Code:</span>
+                <input class="hh-input" placeholder="Por favor ingresa aquí tu código de tienda" style="flex:1" />
+              </div>
+            </div>
+            <div class="hh-dont-text">No uses etiquetas inline con dos puntos (aprietan el campo). No escribas placeholders largos en oraciones: se vuelven invisibles cuando el usuario empieza a escribir.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TABLES ── -->
+    <section class="ds-page" id="page-tables">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Tablas</h1>
+        <p class="ds-page-desc">Las tablas densas y ordenables son el caballo de batalla de las apps de HH. Usa numerales tabulares para columnas numéricas, y reserva el hover de fila para indicios de interactividad.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Tabla Predeterminada</h2>
+        <div class="ds-demo" style="padding:0">
+          <table class="hh-table">
+            <thead>
+              <tr>
+                <th class="sortable">Tienda</th>
+                <th>Cluster</th>
+                <th class="right sortable">Ventas MTD</th>
+                <th class="right sortable">Presupuesto</th>
+                <th class="right">% Alcance</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R048 · Fashion Drive</td>
+                <td><span class="hh-badge">Premium</span></td>
+                <td class="right num">$1,247,580</td>
+                <td class="right num">$1,100,000</td>
+                <td class="right num" style="color:var(--hh-success)">113.4%</td>
+                <td><span class="hh-badge hh-badge--success"><span class="hh-dot hh-dot--success"></span>En meta</span></td>
+              </tr>
+              <tr>
+                <td>R032 · Antara</td>
+                <td><span class="hh-badge">Premium</span></td>
+                <td class="right num">$985,232</td>
+                <td class="right num">$1,050,000</td>
+                <td class="right num" style="color:var(--hh-warning)">93.8%</td>
+                <td><span class="hh-badge hh-badge--warning"><span class="hh-dot hh-dot--warning"></span>En riesgo</span></td>
+              </tr>
+              <tr>
+                <td>H015 · Perisur</td>
+                <td><span class="hh-badge">Standard</span></td>
+                <td class="right num">$652,108</td>
+                <td class="right num">$800,000</td>
+                <td class="right num" style="color:var(--hh-danger)">81.5%</td>
+                <td><span class="hh-badge hh-badge--danger"><span class="hh-dot hh-dot--danger"></span>Atrasado</span></td>
+              </tr>
+              <tr>
+                <td>R021 · Andares</td>
+                <td><span class="hh-badge">Premium</span></td>
+                <td class="right num">$1,108,420</td>
+                <td class="right num">$1,000,000</td>
+                <td class="right num" style="color:var(--hh-success)">110.8%</td>
+                <td><span class="hh-badge hh-badge--success"><span class="hh-dot hh-dot--success"></span>En meta</span></td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="2">Total · 4 tiendas</td>
+                <td class="right num">$3,993,340</td>
+                <td class="right num">$3,950,000</td>
+                <td class="right num">101.1%</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Sí y No</h2>
+        <div class="hh-dodont">
+          <div class="hh-do">
+            <div class="hh-do-label">SÍ</div>
+            <div class="hh-do-example" style="display:block;padding:0">
+              <table class="hh-table">
+                <thead><tr><th>Tienda</th><th class="right">Ventas</th></tr></thead>
+                <tbody>
+                  <tr><td>R048</td><td class="right num">$1,247,580</td></tr>
+                  <tr><td>R032</td><td class="right num">$985,232</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="hh-do-text">Alinea columnas numéricas a la derecha y usa numerales tabulares (<code style="font-family:var(--hh-font-mono);color:var(--hh-brand-300)">.num</code>) para que los dígitos se alineen. Encabezados de tabla pegajosos en listas largas.</div>
+          </div>
+          <div class="hh-dont">
+            <div class="hh-dont-label">NO</div>
+            <div class="hh-dont-example" style="display:block;padding:0">
+              <table class="hh-table">
+                <thead><tr><th>Tienda</th><th>Ventas</th></tr></thead>
+                <tbody>
+                  <tr><td>R048</td><td>$1,247,580</td></tr>
+                  <tr><td>R032</td><td>$985,232</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="hh-dont-text">No alinees números a la izquierda en fuente proporcional: no se alinearán en el punto decimal y serán difíciles de comparar visualmente.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── KPI CARDS ── -->
+    <section class="ds-page" id="page-kpis">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Tarjetas KPI</h1>
+        <p class="ds-page-desc">La firma de todo dashboard de HH. Mantenlas planas, densas y alineadas en una grid separada por bordes de 1px en lugar de gaps.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Grid Estándar</h2>
+        <div class="ds-demo" style="padding:0">
+          <div class="hh-kpi-grid">
+            <div class="hh-kpi"><div class="hh-kpi-label">Ventas MTD</div><div class="hh-kpi-value">$3.99M</div><div class="hh-kpi-sub"><span class="hh-kpi-trend up">▲ 12.4%</span> vs mes anterior</div></div>
+            <div class="hh-kpi"><div class="hh-kpi-label">% Alcance</div><div class="hh-kpi-value">101.1%</div><div class="hh-kpi-sub">Meta: 100%</div></div>
+            <div class="hh-kpi"><div class="hh-kpi-label">Tickets</div><div class="hh-kpi-value">12,847</div><div class="hh-kpi-sub"><span class="hh-kpi-trend up">▲ 8.2%</span></div></div>
+            <div class="hh-kpi"><div class="hh-kpi-label">Ticket Promedio</div><div class="hh-kpi-value">$310.84</div><div class="hh-kpi-sub"><span class="hh-kpi-trend down">▼ 2.1%</span></div></div>
+            <div class="hh-kpi"><div class="hh-kpi-label">Conversión</div><div class="hh-kpi-value">18.2%</div><div class="hh-kpi-sub">Foot traffic: 70,478</div></div>
+          </div>
+        </div>
+        <div class="ds-code">&lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-kpi-grid"</span>&gt;
+  &lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-kpi"</span>&gt;
+    &lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-kpi-label"</span>&gt;Ventas MTD&lt;/<span class="k">div</span>&gt;
+    &lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-kpi-value"</span>&gt;$3.99M&lt;/<span class="k">div</span>&gt;
+    &lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-kpi-sub"</span>&gt;
+      &lt;<span class="k">span</span> <span class="a">class</span>=<span class="s">"hh-kpi-trend up"</span>&gt;▲ 12.4%&lt;/<span class="k">span</span>&gt; vs mes anterior
+    &lt;/<span class="k">div</span>&gt;
+  &lt;/<span class="k">div</span>&gt;
+&lt;/<span class="k">div</span>&gt;</div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Sí y No</h2>
+        <div class="hh-dodont">
+          <div class="hh-do">
+            <div class="hh-do-label">SÍ</div>
+            <div class="hh-do-example" style="display:block;padding:0">
+              <div class="hh-kpi" style="background:var(--hh-surface-1)"><div class="hh-kpi-label">Ventas MTD</div><div class="hh-kpi-value">$3.99M</div><div class="hh-kpi-sub"><span class="hh-kpi-trend up">▲ 12.4%</span> vs mes anterior</div></div>
+            </div>
+            <div class="hh-do-text">Formatea números grandes ($3.99M, no $3,994,231). Siempre incluye contexto: un delta, una meta o un periodo de comparación, para que el número signifique algo.</div>
+          </div>
+          <div class="hh-dont">
+            <div class="hh-dont-label">NO</div>
+            <div class="hh-dont-example" style="display:block;padding:0">
+              <div class="hh-kpi" style="background:var(--hh-surface-1)"><div class="hh-kpi-label">Ventas</div><div class="hh-kpi-value" style="font-size:14px">$3,994,231.50</div></div>
+            </div>
+            <div class="hh-dont-text">No muestres precisión completa en un KPI (compite con la etiqueta por peso visual) y no entregues un KPI sin contexto: un número solo no le dice nada al usuario.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BADGES ── -->
+    <section class="ds-page" id="page-badges">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Etiquetas y Estados</h1>
+        <p class="ds-page-desc">Indicadores de estado compactos en cinco sabores semánticos. Combínalos con un punto de estado para énfasis inline.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Variantes de Etiqueta</h2>
+        <div class="ds-demo ds-demo--flex">
+          <span class="hh-badge">Predeterminado</span>
+          <span class="hh-badge hh-badge--success">Activo</span>
+          <span class="hh-badge hh-badge--warning">Pendiente</span>
+          <span class="hh-badge hh-badge--alert">Revisión</span>
+          <span class="hh-badge hh-badge--danger">Falló</span>
+          <span class="hh-badge hh-badge--info">Información</span>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Con Puntos de Estado</h2>
+        <div class="ds-demo ds-demo--flex">
+          <span class="hh-badge hh-badge--success"><span class="hh-dot hh-dot--success"></span>En meta</span>
+          <span class="hh-badge hh-badge--warning"><span class="hh-dot hh-dot--warning"></span>En riesgo</span>
+          <span class="hh-badge hh-badge--danger"><span class="hh-dot hh-dot--danger"></span>Atrasado</span>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Puntos Sueltos (para tablas)</h2>
+        <div class="ds-demo ds-demo--flex">
+          <span class="hh-dot hh-dot--success"></span>
+          <span class="hh-dot hh-dot--warning"></span>
+          <span class="hh-dot hh-dot--danger"></span>
+          <span class="hh-dot hh-dot--neutral"></span>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Sí y No</h2>
+        <div class="hh-dodont">
+          <div class="hh-do">
+            <div class="hh-do-label">SÍ</div>
+            <div class="hh-do-example">
+              <span class="hh-badge hh-badge--success">Activo</span>
+              <span class="hh-badge hh-badge--warning">Pendiente</span>
+              <span class="hh-badge hh-badge--danger">Falló</span>
+            </div>
+            <div class="hh-do-text">Usa el color semánticamente: verde para sano/activo, amarillo para necesita atención, rojo para problemas. Mantén las etiquetas en una o dos palabras.</div>
+          </div>
+          <div class="hh-dont">
+            <div class="hh-dont-label">NO</div>
+            <div class="hh-dont-example">
+              <span class="hh-badge hh-badge--success">Premium</span>
+              <span class="hh-badge hh-badge--info">Standard</span>
+              <span class="hh-badge hh-badge--warning">Express</span>
+            </div>
+            <div class="hh-dont-text">No uses colores de estado para taxonomías que no son de estado. Un "cluster" o "categoría" no es éxito/advertencia/peligro: usa la etiqueta neutra por defecto.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── NAVIGATION ── -->
+    <section class="ds-page" id="page-navigation">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Navegación</h1>
+        <p class="ds-page-desc">Navegación de dos niveles: un header de 40px con marca y acciones globales, más una barra de tabs de 36px para secciones de primer nivel. Los sub-tabs viven dentro de las áreas de contenido.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Header de App + Navegación Superior</h2>
+        <div class="ds-demo" style="padding:0">
+          <div class="hh-app-header">
+            <div class="hh-app-header-left">
+              <div style="width:24px;height:24px;background:var(--hh-brand-500);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px">HH</div>
+              <div>
+                <span class="hh-app-header-title">DASHBOARD CEDIS</span>
+                <span class="hh-app-header-sub">Onest · Invenova</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:var(--hh-space-4);align-items:center">
+              <span class="hh-badge">v2.1</span>
+              <button class="hh-btn hh-btn--ghost hh-btn--sm">Gabriel</button>
+            </div>
+          </div>
+          <div class="hh-app-navbar">
+            <button class="hh-app-nav-btn active">Dashboard</button>
+            <button class="hh-app-nav-btn">Operaciones</button>
+            <button class="hh-app-nav-btn">KPIs</button>
+            <button class="hh-app-nav-btn">Reportes</button>
+            <button class="hh-app-nav-btn">Admin</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Tabs Inline</h2>
+        <div class="ds-demo">
+          <div class="hh-tabs">
+            <button class="hh-tab active">Resumen</button>
+            <button class="hh-tab">Tiendas</button>
+            <button class="hh-tab">Por Región</button>
+            <button class="hh-tab">Por Gerente</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MODALS / ALERTS ── -->
+    <section class="ds-page" id="page-modals">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Modales y Alertas</h1>
+        <p class="ds-page-desc">Los modales llevan sombra elev-5 y un blur de fondo. Las alertas inline usan los cuatro fondos semánticos.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Alertas Inline</h2>
+        <div class="ds-demo ds-col">
+          <div class="hh-alert-box hh-alert-box--success"><div><div class="hh-alert-title">Guardado correctamente</div><div class="hh-alert-msg">Tus cambios fueron escritos en la base de datos.</div></div></div>
+          <div class="hh-alert-box hh-alert-box--warning"><div><div class="hh-alert-title">Pendiente de revisión</div><div class="hh-alert-msg">3 registros requieren aprobación manual antes de procesarse.</div></div></div>
+          <div class="hh-alert-box hh-alert-box--danger"><div><div class="hh-alert-title">Conexión fallida</div><div class="hh-alert-msg">No se pudo alcanzar el endpoint de SAP. Reintentando en 30s.</div></div></div>
+          <div class="hh-alert-box hh-alert-box--info"><div><div class="hh-alert-title">¿Sabías que?</div><div class="hh-alert-msg">Puedes presionar <kbd style="font-family:var(--hh-font-mono);font-size:10px;background:var(--hh-surface-3);padding:1px 4px">⌘K</kbd> para abrir la paleta de comandos.</div></div></div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Diálogo Modal</h2>
+        <div class="ds-demo" style="background:#0a0a0a;padding:var(--hh-space-20);min-height:280px;display:flex;align-items:center;justify-content:center">
+          <div class="hh-modal" style="position:static;box-shadow:var(--hh-elev-5)">
+            <div class="hh-modal-header">
+              <div class="hh-modal-title">Confirmar eliminación</div>
+              <button class="hh-btn hh-btn--ghost hh-btn--icon hh-btn--sm">✕</button>
+            </div>
+            <div class="hh-modal-body">
+              Estás a punto de eliminar permanentemente la regla de comisión para <strong style="color:var(--hh-text-1)">R048 · Fashion Drive</strong>. Esta acción no se puede deshacer.
+            </div>
+            <div class="hh-modal-footer">
+              <button class="hh-btn hh-btn--secondary">Cancelar</button>
+              <button class="hh-btn hh-btn--danger">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Sí y No</h2>
+        <div class="hh-dodont">
+          <div class="hh-do">
+            <div class="hh-do-label">SÍ</div>
+            <div class="hh-do-example" style="display:block">
+              <div style="font-size:12px;color:#ccc;line-height:1.6">
+                <strong style="color:#fff">Confirmar eliminación</strong><br>
+                ¿Eliminar regla de comisión para R048? Esta acción no se puede deshacer.
+              </div>
+            </div>
+            <div class="hh-do-text">Sé específico en el mensaje: nombra la cosa exacta que se ve afectada, declara la consecuencia, y usa el verbo en el botón de acción ("Eliminar", no "OK").</div>
+          </div>
+          <div class="hh-dont">
+            <div class="hh-dont-label">NO</div>
+            <div class="hh-dont-example" style="display:block">
+              <div style="font-size:12px;color:#ccc;line-height:1.6">
+                <strong style="color:#fff">¿Estás seguro?</strong><br>
+                ¿Estás seguro de que quieres realizar esta acción?
+              </div>
+            </div>
+            <div class="hh-dont-text">No escribas mensajes de confirmación genéricos. "¿Estás seguro?" desperdicia un modal: el usuario no tiene información en la cual basar su decisión.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CHARTS ── -->
+    <section class="ds-page" id="page-charts">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Gráficos</h1>
+        <p class="ds-page-desc">
+          Estandarizamos en <strong>Chart.js 4</strong> para apps en producción: es ligero, bien documentado y se renderiza bien en fondos oscuros.
+          Para visualizaciones más complejas (grafos de red, geo, sankey), recurre a <strong>D3</strong> o <strong>Plotly</strong>.
+        </p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Tema de Gráficos Estándar</h2>
+        <p class="ds-section-desc">Aplica este objeto de opciones a cada instancia de Chart.js para consistencia visual.</p>
+        <div class="ds-grid-2">
+          <div class="hh-chart-box">
+            <div class="hh-chart-header"><div class="hh-chart-title">Ventas por Tienda · MTD</div></div>
+            <div style="position:relative;height:220px"><canvas id="chart-bar"></canvas></div>
+          </div>
+          <div class="hh-chart-box">
+            <div class="hh-chart-header"><div class="hh-chart-title">Distribución de Comisiones</div></div>
+            <div style="position:relative;height:220px"><canvas id="chart-doughnut"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Línea de Tendencia</h2>
+        <div class="hh-chart-box">
+          <div class="hh-chart-header"><div class="hh-chart-title">Ventas Diarias · Últimos 30 días</div></div>
+          <div style="position:relative;height:160px"><canvas id="chart-line"></canvas></div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Objeto de Tema de Chart.js</h2>
+        <div class="ds-code"><span class="k">const</span> hhChartTheme = {
+  responsive: <span class="k">true</span>,
+  maintainAspectRatio: <span class="k">false</span>,
+  plugins: {
+    legend: {
+      labels: { color: <span class="s">'#999'</span>, font: { size: <span class="s">10</span>, family: <span class="s">'Inter'</span> } }
+    },
+    tooltip: {
+      backgroundColor: <span class="s">'#1a1a1a'</span>,
+      borderColor: <span class="s">'rgba(255,255,255,0.1)'</span>,
+      borderWidth: <span class="s">1</span>,
+      titleColor: <span class="s">'#fff'</span>,
+      bodyColor: <span class="s">'#ccc'</span>,
+      titleFont: { size: <span class="s">11</span>, family: <span class="s">'Inter'</span> },
+      bodyFont: { size: <span class="s">11</span>, family: <span class="s">'Inter'</span> },
+    }
+  },
+  scales: {
+    x: {
+      grid: { color: <span class="s">'rgba(255,255,255,0.04)'</span> },
+      ticks: { color: <span class="s">'#999'</span>, font: { size: <span class="s">10</span> } }
+    },
+    y: {
+      grid: { color: <span class="s">'rgba(255,255,255,0.04)'</span> },
+      ticks: { color: <span class="s">'#999'</span>, font: { size: <span class="s">10</span> } }
+    }
+  }
+};
+
+<span class="c">// Standard color sequence for series</span>
+<span class="k">const</span> hhVizColors = [<span class="s">'#41768d'</span>, <span class="s">'#80a4b3'</span>, <span class="s">'#44aa99'</span>, <span class="s">'#ddaa44'</span>, <span class="s">'#e08a3c'</span>, <span class="s">'#c07a8a'</span>, <span class="s">'#8a6fa0'</span>, <span class="s">'#6b8e9b'</span>];</div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">⚠ Crítico: Tamaño del Contenedor del Gráfico</h2>
+        <p class="ds-section-desc">
+          Cuando uses <code style="font-family:var(--hh-font-mono);color:var(--hh-brand-300)">responsive: true</code> con <code style="font-family:var(--hh-font-mono);color:var(--hh-brand-300)">maintainAspectRatio: false</code>,
+          <strong>debes</strong> envolver el canvas en un elemento padre con altura explícita en píxeles. De lo contrario, el gráfico crecerá infinitamente en cada frame de renderizado.
+        </p>
+        <div class="hh-alert-box hh-alert-box--warning" style="margin-bottom:var(--hh-space-8)">
+          <div>
+            <div class="hh-alert-title">El bug del crecimiento infinito</div>
+            <div class="hh-alert-msg">Chart.js mide su padre → redimensiona → el padre crece → mide otra vez → bucle infinito. El atributo <code style="font-family:var(--hh-font-mono)">height</code> en la etiqueta canvas se ignora bajo estos ajustes.</div>
+          </div>
+        </div>
+        <div class="ds-code"><span class="c">// ✗ WRONG — chart will grow infinitely</span>
+&lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-chart-box"</span>&gt;
+  &lt;<span class="k">canvas</span> <span class="a">id</span>=<span class="s">"my-chart"</span> <span class="a">height</span>=<span class="s">"200"</span>&gt;&lt;/<span class="k">canvas</span>&gt;
+&lt;/<span class="k">div</span>&gt;
+
+<span class="c">// ✓ CORRECT — wrap in fixed-height container</span>
+&lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-chart-box"</span>&gt;
+  &lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-chart-title"</span>&gt;Sales by Store&lt;/<span class="k">div</span>&gt;
+  &lt;<span class="k">div</span> <span class="a">style</span>=<span class="s">"position:relative;height:220px"</span>&gt;
+    &lt;<span class="k">canvas</span> <span class="a">id</span>=<span class="s">"my-chart"</span>&gt;&lt;/<span class="k">canvas</span>&gt;
+  &lt;/<span class="k">div</span>&gt;
+&lt;/<span class="k">div</span>&gt;</div>
+        <p style="font-size:var(--hh-fs-micro);color:var(--hh-text-3);margin-top:var(--hh-space-6)">
+          Alturas recomendadas: <strong style="color:var(--hh-text-2)">220px</strong> para gráficos primarios, <strong style="color:var(--hh-text-2)">160px</strong> para líneas de tendencia, <strong style="color:var(--hh-text-2)">140px</strong> para sparklines / mini gráficos dentro de dashboards.
+        </p>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Recomendaciones de Librerías</h2>
+        <div class="ds-grid-3">
+          <div class="hh-card">
+            <div class="hh-card-title">Chart.js 4</div>
+            <p style="font-size:var(--hh-fs-data);color:var(--hh-text-2);line-height:1.6">Predeterminado para barras, líneas, donas, área. Ya en producción en HH.</p>
+          </div>
+          <div class="hh-card">
+            <div class="hh-card-title">Recharts (React)</div>
+            <p style="font-size:var(--hh-fs-data);color:var(--hh-text-2);line-height:1.6">Para apps en React donde se prefiere JSX declarativo. Mismos tokens de color.</p>
+          </div>
+          <div class="hh-card">
+            <div class="hh-card-title">D3 / Plotly</div>
+            <p style="font-size:var(--hh-fs-data);color:var(--hh-text-2);line-height:1.6">Reservado para visualizaciones no estándar: redes, mapas geo, sankey.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TOOLTIPS ── -->
+    <section class="ds-page" id="page-tooltips">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Tooltips</h1>
+        <p class="ds-page-desc">Pequeñas etiquetas contextuales que aparecen al hacer hover. Para información breve y suplementaria; nunca para contenido crítico que el usuario deba leer para completar una tarea.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Predeterminado</h2>
+        <div class="ds-demo ds-demo--flex" style="padding:var(--hh-space-24)">
+          <div class="hh-tooltip-wrap">
+            <button class="hh-btn hh-btn--secondary">Pasa el cursor</button>
+            <div class="hh-tooltip">Esto es un tooltip</div>
+          </div>
+          <div class="hh-tooltip-wrap">
+            <button class="hh-btn hh-btn--icon hh-btn--secondary">
+              <svg class="hh-icon hh-icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+            <div class="hh-tooltip">Exportar a CSV</div>
+          </div>
+          <div class="hh-tooltip-wrap" style="color:var(--hh-text-3);font-size:var(--hh-fs-data);border-bottom:1px dotted var(--hh-text-4);cursor:help">
+            % Alcance
+            <div class="hh-tooltip">Ventas / presupuesto × 100</div>
+          </div>
+        </div>
+        <div class="ds-code">&lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-tooltip-wrap"</span>&gt;
+  &lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-btn hh-btn--icon hh-btn--secondary"</span>&gt;...&lt;/<span class="k">button</span>&gt;
+  &lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-tooltip"</span>&gt;Export to CSV&lt;/<span class="k">div</span>&gt;
+&lt;/<span class="k">div</span>&gt;</div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Cuándo usar</h2>
+        <ul style="color:var(--hh-text-2);padding-left:20px;line-height:1.9;font-size:var(--hh-fs-body)">
+          <li>Etiquetar botones solo de icono (exportar, ajustes, eliminar)</li>
+          <li>Definir abreviaturas o jerga (códigos de KPI, acrónimos de rol)</li>
+          <li>Mostrar el valor completo de una celda truncada en una tabla densa</li>
+          <li>Explicar un cálculo detrás de una métrica derivada</li>
+        </ul>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Sí y No</h2>
+        <div class="hh-dodont">
+          <div class="hh-do">
+            <div class="hh-do-label">SÍ</div>
+            <div class="hh-do-example">
+              <div class="hh-tooltip-wrap">
+                <button class="hh-btn hh-btn--icon hh-btn--secondary">
+                  <svg class="hh-icon hh-icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+                <div class="hh-tooltip">Eliminar registro</div>
+              </div>
+            </div>
+            <div class="hh-do-text">Mantén los tooltips cortos: 1–4 palabras. Úsalos para clarificar iconos que de otra forma serían ambiguos.</div>
+          </div>
+          <div class="hh-dont">
+            <div class="hh-dont-label">NO</div>
+            <div class="hh-dont-example">
+              <span style="font-size:11px;color:var(--hh-text-3);max-width:220px">Tooltip: "Haz click en este botón para eliminar permanentemente el registro seleccionado de la base de datos. Esta acción requiere privilegios de administrador y no se puede deshacer..."</span>
+            </div>
+            <div class="hh-dont-text">No pongas información crítica, instrucciones largas o elementos interactivos en un tooltip; usa un popover o texto de ayuda inline en su lugar.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DROPDOWN MENU ── -->
+    <section class="ds-page" id="page-dropdowns">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Menús Desplegables</h1>
+        <p class="ds-page-desc">Menús de acción que flotan sobre su disparador. Para acciones de fila, menús de "más", menús de usuario y cualquier lista de opciones que no quepa inline.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Menú Predeterminado</h2>
+        <div class="ds-demo" style="padding:var(--hh-space-24);min-height:280px">
+          <div class="hh-menu" style="position:static;display:inline-block">
+            <div class="hh-menu-label">Acciones</div>
+            <button class="hh-menu-item">
+              <svg class="hh-icon hh-icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Edit record
+            </button>
+            <button class="hh-menu-item">
+              <svg class="hh-icon hh-icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export to CSV
+            </button>
+            <button class="hh-menu-item">
+              <svg class="hh-icon hh-icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Duplicate
+            </button>
+            <div class="hh-menu-divider"></div>
+            <button class="hh-menu-item danger">
+              <svg class="hh-icon hh-icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              Delete record
+            </button>
+          </div>
+        </div>
+        <div class="ds-code">&lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-menu"</span>&gt;
+  &lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-menu-label"</span>&gt;Actions&lt;/<span class="k">div</span>&gt;
+  &lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-menu-item"</span>&gt;Edit record&lt;/<span class="k">button</span>&gt;
+  &lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-menu-item"</span>&gt;Export to CSV&lt;/<span class="k">button</span>&gt;
+  &lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-menu-divider"</span>&gt;&lt;/<span class="k">div</span>&gt;
+  &lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-menu-item danger"</span>&gt;Delete record&lt;/<span class="k">button</span>&gt;
+&lt;/<span class="k">div</span>&gt;</div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Notas</h2>
+        <p style="color:var(--hh-text-2);font-size:var(--hh-fs-body);line-height:1.7">
+          El CSS te da el menú visual: abrir, cerrar y posicionar lo dejas a tu framework
+          (estado de React, v-model de Vue, handlers vanilla). Combínalo con <code style="font-family:var(--hh-font-mono);color:var(--hh-brand-300)">--hh-z-dropdown</code>
+          para una capa correcta, y siempre posiciona el menú para que no se desborde del viewport (Floating UI maneja esto gratis en apps JS).
+        </p>
+      </div>
+    </section>
+
+    <!-- ── BREADCRUMBS ── -->
+    <section class="ds-page" id="page-breadcrumbs">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Migas de Pan</h1>
+        <p class="ds-page-desc">Muestran al usuario dónde está dentro de una jerarquía anidada. Para 3+ niveles de profundidad: con 2 niveles, el título de la página suele bastar.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Predeterminado</h2>
+        <div class="ds-demo">
+          <nav class="hh-breadcrumb">
+            <a href="#">Operaciones</a>
+            <span class="hh-breadcrumb-sep">/</span>
+            <a href="#">Tiendas</a>
+            <span class="hh-breadcrumb-sep">/</span>
+            <a href="#">Region Norte</a>
+            <span class="hh-breadcrumb-sep">/</span>
+            <span class="hh-breadcrumb-current">R048 · Fashion Drive</span>
+          </nav>
+        </div>
+        <div class="ds-code">&lt;<span class="k">nav</span> <span class="a">class</span>=<span class="s">"hh-breadcrumb"</span>&gt;
+  &lt;<span class="k">a</span> <span class="a">href</span>=<span class="s">"/operations"</span>&gt;Operations&lt;/<span class="k">a</span>&gt;
+  &lt;<span class="k">span</span> <span class="a">class</span>=<span class="s">"hh-breadcrumb-sep"</span>&gt;/&lt;/<span class="k">span</span>&gt;
+  &lt;<span class="k">a</span> <span class="a">href</span>=<span class="s">"/operations/tiendas"</span>&gt;Tiendas&lt;/<span class="k">a</span>&gt;
+  &lt;<span class="k">span</span> <span class="a">class</span>=<span class="s">"hh-breadcrumb-sep"</span>&gt;/&lt;/<span class="k">span</span>&gt;
+  &lt;<span class="k">span</span> <span class="a">class</span>=<span class="s">"hh-breadcrumb-current"</span>&gt;R048 · Fashion Drive&lt;/<span class="k">span</span>&gt;
+&lt;/<span class="k">nav</span>&gt;</div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Con separador de chevron</h2>
+        <div class="ds-demo">
+          <nav class="hh-breadcrumb">
+            <a href="#">Compensaciones</a>
+            <span class="hh-breadcrumb-sep">›</span>
+            <a href="#">Reglas</a>
+            <span class="hh-breadcrumb-sep">›</span>
+            <span class="hh-breadcrumb-current">Premium Sellers Q2</span>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PAGINATION ── -->
+    <section class="ds-page" id="page-pagination">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Paginación</h1>
+        <p class="ds-page-desc">Para listas largas donde el scroll infinito no es apropiado. Combínalo con el componente de tabla en pantallas de listas de datos.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Predeterminado</h2>
+        <div class="ds-demo ds-demo--flex">
+          <div class="hh-pagination">
+            <button class="hh-page-btn" disabled>‹</button>
+            <button class="hh-page-btn active">1</button>
+            <button class="hh-page-btn">2</button>
+            <button class="hh-page-btn">3</button>
+            <button class="hh-page-btn">4</button>
+            <span class="hh-page-ellipsis">…</span>
+            <button class="hh-page-btn">12</button>
+            <button class="hh-page-btn">›</button>
+            <span class="hh-pagination-info">Mostrando 1–25 de 287</span>
+          </div>
+        </div>
+        <div class="ds-code">&lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-pagination"</span>&gt;
+  &lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-page-btn"</span> <span class="a">disabled</span>&gt;‹&lt;/<span class="k">button</span>&gt;
+  &lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-page-btn active"</span>&gt;1&lt;/<span class="k">button</span>&gt;
+  &lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-page-btn"</span>&gt;2&lt;/<span class="k">button</span>&gt;
+  &lt;<span class="k">span</span> <span class="a">class</span>=<span class="s">"hh-page-ellipsis"</span>&gt;…&lt;/<span class="k">span</span>&gt;
+  &lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-page-btn"</span>&gt;12&lt;/<span class="k">button</span>&gt;
+  &lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-page-btn"</span>&gt;›&lt;/<span class="k">button</span>&gt;
+  &lt;<span class="k">span</span> <span class="a">class</span>=<span class="s">"hh-pagination-info"</span>&gt;Mostrando 1–25 de 287&lt;/<span class="k">span</span>&gt;
+&lt;/<span class="k">div</span>&gt;</div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Compacta (sin info)</h2>
+        <div class="ds-demo ds-demo--flex">
+          <div class="hh-pagination">
+            <button class="hh-page-btn">‹</button>
+            <button class="hh-page-btn">1</button>
+            <button class="hh-page-btn active">2</button>
+            <button class="hh-page-btn">3</button>
+            <button class="hh-page-btn">›</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── EMPTY STATES ── -->
+    <section class="ds-page" id="page-empty">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Estados Vacíos</h1>
+        <p class="ds-page-desc">Lo que el usuario ve cuando no hay nada que mostrar: sin registros aún, sin resultados de búsqueda, sin filtros coincidentes. Siempre ofrece una siguiente acción.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Aún sin datos</h2>
+        <div class="ds-demo" style="padding:0">
+          <div class="hh-empty">
+            <svg class="hh-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+            <div class="hh-empty-title">Aún sin reglas de comisión</div>
+            <div class="hh-empty-msg">Crea tu primera regla para empezar a calcular nómina automáticamente. Siempre puedes editarla o archivarla después.</div>
+            <div class="hh-empty-actions">
+              <button class="hh-btn hh-btn--primary">Crear Primera Regla</button>
+              <button class="hh-btn hh-btn--secondary">Leer Docs</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Sin resultados de los filtros</h2>
+        <div class="ds-demo" style="padding:0">
+          <div class="hh-empty">
+            <svg class="hh-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            <div class="hh-empty-title">Ninguna tienda coincide con tus filtros</div>
+            <div class="hh-empty-msg">Intenta ampliar el rango de fechas o quitar el filtro de cluster.</div>
+            <div class="hh-empty-actions">
+              <button class="hh-btn hh-btn--secondary">Limpiar Filtros</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Código</h2>
+        <div class="ds-code">&lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-empty"</span>&gt;
+  &lt;<span class="k">svg</span> <span class="a">class</span>=<span class="s">"hh-empty-icon"</span>&gt;...&lt;/<span class="k">svg</span>&gt;
+  &lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-empty-title"</span>&gt;No commission rules yet&lt;/<span class="k">div</span>&gt;
+  &lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-empty-msg"</span>&gt;Create your first rule...&lt;/<span class="k">div</span>&gt;
+  &lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-empty-actions"</span>&gt;
+    &lt;<span class="k">button</span> <span class="a">class</span>=<span class="s">"hh-btn hh-btn--primary"</span>&gt;Create First Rule&lt;/<span class="k">button</span>&gt;
+  &lt;/<span class="k">div</span>&gt;
+&lt;/<span class="k">div</span>&gt;</div>
+      </div>
+    </section>
+
+    <!-- ── SKELETON LOADERS ── -->
+    <section class="ds-page" id="page-skeleton">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Componentes</div>
+        <h1 class="ds-page-title">Skeletons de Carga</h1>
+        <p class="ds-page-desc">Formas placeholder que se muestran mientras los datos cargan. Úsalas cuando el layout se conoce de antemano: reducen la latencia percibida más que un spinner.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Estado de carga de KPI</h2>
+        <div class="ds-demo" style="padding:0">
+          <div class="hh-kpi-grid">
+            <div class="hh-kpi"><div class="hh-skeleton hh-skeleton--text" style="width:60%"></div><div class="hh-skeleton hh-skeleton--kpi"></div><div class="hh-skeleton hh-skeleton--text" style="width:80%;margin:0"></div></div>
+            <div class="hh-kpi"><div class="hh-skeleton hh-skeleton--text" style="width:50%"></div><div class="hh-skeleton hh-skeleton--kpi"></div><div class="hh-skeleton hh-skeleton--text" style="width:70%;margin:0"></div></div>
+            <div class="hh-kpi"><div class="hh-skeleton hh-skeleton--text" style="width:55%"></div><div class="hh-skeleton hh-skeleton--kpi"></div><div class="hh-skeleton hh-skeleton--text" style="width:75%;margin:0"></div></div>
+            <div class="hh-kpi"><div class="hh-skeleton hh-skeleton--text" style="width:65%"></div><div class="hh-skeleton hh-skeleton--kpi"></div><div class="hh-skeleton hh-skeleton--text" style="width:60%;margin:0"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Estado de carga de tabla</h2>
+        <div class="ds-demo" style="padding:0">
+          <table class="hh-table">
+            <thead><tr><th>Tienda</th><th>Cluster</th><th class="right">Ventas</th><th class="right">Alcance</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td><div class="hh-skeleton hh-skeleton--line" style="width:140px"></div></td><td><div class="hh-skeleton hh-skeleton--line" style="width:60px"></div></td><td class="right"><div class="hh-skeleton hh-skeleton--line" style="width:80px;margin-left:auto"></div></td><td class="right"><div class="hh-skeleton hh-skeleton--line" style="width:50px;margin-left:auto"></div></td><td><div class="hh-skeleton hh-skeleton--line" style="width:90px"></div></td></tr>
+              <tr><td><div class="hh-skeleton hh-skeleton--line" style="width:160px"></div></td><td><div class="hh-skeleton hh-skeleton--line" style="width:70px"></div></td><td class="right"><div class="hh-skeleton hh-skeleton--line" style="width:90px;margin-left:auto"></div></td><td class="right"><div class="hh-skeleton hh-skeleton--line" style="width:50px;margin-left:auto"></div></td><td><div class="hh-skeleton hh-skeleton--line" style="width:80px"></div></td></tr>
+              <tr><td><div class="hh-skeleton hh-skeleton--line" style="width:130px"></div></td><td><div class="hh-skeleton hh-skeleton--line" style="width:60px"></div></td><td class="right"><div class="hh-skeleton hh-skeleton--line" style="width:70px;margin-left:auto"></div></td><td class="right"><div class="hh-skeleton hh-skeleton--line" style="width:50px;margin-left:auto"></div></td><td><div class="hh-skeleton hh-skeleton--line" style="width:90px"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Variantes</h2>
+        <div class="ds-demo">
+          <div style="max-width:480px;display:flex;flex-direction:column;gap:var(--hh-space-8)">
+            <div class="hh-skeleton hh-skeleton--title"></div>
+            <div class="hh-skeleton hh-skeleton--text" style="width:90%"></div>
+            <div class="hh-skeleton hh-skeleton--text" style="width:85%"></div>
+            <div class="hh-skeleton hh-skeleton--text" style="width:60%"></div>
+            <div class="hh-skeleton hh-skeleton--block" style="margin-top:8px"></div>
+          </div>
+        </div>
+        <div class="ds-code">&lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-skeleton hh-skeleton--title"</span>&gt;&lt;/<span class="k">div</span>&gt;
+&lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-skeleton hh-skeleton--text"</span> <span class="a">style</span>=<span class="s">"width:90%"</span>&gt;&lt;/<span class="k">div</span>&gt;
+&lt;<span class="k">div</span> <span class="a">class</span>=<span class="s">"hh-skeleton hh-skeleton--block"</span>&gt;&lt;/<span class="k">div</span>&gt;
+
+<span class="c">// Variants: --text, --title, --kpi, --line, --block</span></div>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Cuándo usar skeleton vs. spinner</h2>
+        <div class="ds-grid-2">
+          <div class="hh-card">
+            <div class="hh-card-title">Usa skeletons</div>
+            <p style="font-size:var(--hh-fs-data);color:var(--hh-text-2);line-height:1.7">Cuando se conoce la forma del resultado (una tabla con N columnas, una grid de KPIs). Los skeletons previsualizan el layout, reduciendo el tiempo de carga percibido.</p>
+          </div>
+          <div class="hh-card">
+            <div class="hh-card-title">Usa un spinner</div>
+            <p style="font-size:var(--hh-fs-data);color:var(--hh-text-2);line-height:1.7">Cuando la forma del resultado es desconocida (una consulta de búsqueda, una respuesta de chat) o para acciones que interrumpen al usuario (guardar, enviar).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DASHBOARD PATTERN ── -->
+    <section class="ds-page" id="page-dashboard">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Patrones</div>
+        <h1 class="ds-page-title">Layout de Dashboard</h1>
+        <p class="ds-page-desc">El dashboard canónico de HH: header → strip de KPIs → fila de gráficos → tabla de datos. Optimizado para un tiempo de escaneo &lt;1s.</p>
+      </header>
+
+      <div class="ds-section">
+        <div class="ds-demo" style="padding:0;background:var(--hh-bg)">
+          <div class="hh-app-header">
+            <div class="hh-app-header-left">
+              <div style="width:24px;height:24px;background:var(--hh-brand-500);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px">HH</div>
+              <div><span class="hh-app-header-title">APP DE EJEMPLO</span><span class="hh-app-header-sub">v1.0</span></div>
+            </div>
+          </div>
+          <div class="hh-app-navbar">
+            <button class="hh-app-nav-btn active">Dashboard</button>
+            <button class="hh-app-nav-btn">Detalle</button>
+            <button class="hh-app-nav-btn">Reportes</button>
+          </div>
+          <div style="padding:var(--hh-space-12)">
+            <div class="hh-kpi-grid" style="margin-bottom:var(--hh-space-8)">
+              <div class="hh-kpi"><div class="hh-kpi-label">Ingresos</div><div class="hh-kpi-value">$3.99M</div><div class="hh-kpi-sub"><span class="hh-kpi-trend up">▲ 12.4%</span></div></div>
+              <div class="hh-kpi"><div class="hh-kpi-label">Margen</div><div class="hh-kpi-value">42.1%</div><div class="hh-kpi-sub">Meta: 40%</div></div>
+              <div class="hh-kpi"><div class="hh-kpi-label">Tickets</div><div class="hh-kpi-value">12,847</div><div class="hh-kpi-sub"><span class="hh-kpi-trend up">▲ 8.2%</span></div></div>
+              <div class="hh-kpi"><div class="hh-kpi-label">Conversión</div><div class="hh-kpi-value">18.2%</div><div class="hh-kpi-sub">Foot: 70k</div></div>
+            </div>
+            <div class="ds-grid-2" style="margin-bottom:var(--hh-space-8)">
+              <div class="hh-chart-box"><div class="hh-chart-header"><div class="hh-chart-title">Tendencia 30d</div></div><div style="position:relative;height:140px"><canvas id="chart-mini-1"></canvas></div></div>
+              <div class="hh-chart-box"><div class="hh-chart-header"><div class="hh-chart-title">Por Categoría</div></div><div style="position:relative;height:140px"><canvas id="chart-mini-2"></canvas></div></div>
+            </div>
+            <table class="hh-table">
+              <thead><tr><th>Tienda</th><th class="right">Ventas</th><th class="right">% Alcance</th><th>Estado</th></tr></thead>
+              <tbody>
+                <tr><td>R048</td><td class="right num">$1,247,580</td><td class="right num" style="color:var(--hh-success)">113.4%</td><td><span class="hh-dot hh-dot--success"></span></td></tr>
+                <tr><td>R032</td><td class="right num">$985,232</td><td class="right num" style="color:var(--hh-warning)">93.8%</td><td><span class="hh-dot hh-dot--warning"></span></td></tr>
+                <tr><td>H015</td><td class="right num">$652,108</td><td class="right num" style="color:var(--hh-danger)">81.5%</td><td><span class="hh-dot hh-dot--danger"></span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FORM PATTERN ── -->
+    <section class="ds-page" id="page-formpattern">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Patrones</div>
+        <h1 class="ds-page-title">Layout de Formulario</h1>
+        <p class="ds-page-desc">Formulario de dos columnas con encabezados de sección y un footer pegajoso de acciones. Úsalo para pantallas de crear/editar.</p>
+      </header>
+
+      <div class="ds-section">
+        <div class="ds-demo">
+          <div style="max-width:640px">
+            <div style="font-size:var(--hh-fs-h3);font-weight:var(--hh-fw-semibold);color:var(--hh-text-1);margin-bottom:var(--hh-space-3)">Nueva Regla de Comisión</div>
+            <div style="font-size:var(--hh-fs-data);color:var(--hh-text-3);margin-bottom:var(--hh-space-12)">Define los parámetros de cálculo para una nueva regla de nómina.</div>
+
+            <div style="font-size:var(--hh-fs-label);color:var(--hh-text-3);text-transform:uppercase;letter-spacing:0.05em;margin:var(--hh-space-12) 0 var(--hh-space-6);padding-bottom:var(--hh-space-3);border-bottom:1px solid var(--hh-border-1)">Identificación</div>
+            <div class="ds-grid-2" style="gap:var(--hh-space-12)">
+              <div class="hh-form-group"><label class="hh-label">Nombre de la Regla</label><input class="hh-input" placeholder="ej. Vendedores Premium Q2"></div>
+              <div class="hh-form-group"><label class="hh-label">Vigente Desde</label><input class="hh-input" type="date"></div>
+              <div class="hh-form-group"><label class="hh-label">Cluster</label><select class="hh-select"><option>Premium</option><option>Standard</option></select></div>
+              <div class="hh-form-group"><label class="hh-label">Rol</label><select class="hh-select"><option>Vendedor</option><option>Gerente</option></select></div>
+            </div>
+
+            <div style="font-size:var(--hh-fs-label);color:var(--hh-text-3);text-transform:uppercase;letter-spacing:0.05em;margin:var(--hh-space-16) 0 var(--hh-space-6);padding-bottom:var(--hh-space-3);border-bottom:1px solid var(--hh-border-1)">Cálculo</div>
+            <div class="ds-grid-2" style="gap:var(--hh-space-12)">
+              <div class="hh-form-group"><label class="hh-label">Tasa Base (%)</label><input class="hh-input" placeholder="0.00"></div>
+              <div class="hh-form-group"><label class="hh-label">Bono por Tier</label><input class="hh-input" placeholder="0"></div>
+            </div>
+            <div class="hh-form-group" style="margin-top:var(--hh-space-12)">
+              <label class="hh-label">Notas</label>
+              <textarea class="hh-textarea" placeholder="Notas internas para esta regla..."></textarea>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:var(--hh-space-6);margin-top:var(--hh-space-16);padding-top:var(--hh-space-12);border-top:1px solid var(--hh-border-1)">
+              <button class="hh-btn hh-btn--secondary">Cancelar</button>
+              <button class="hh-btn hh-btn--ghost">Guardar como Borrador</button>
+              <button class="hh-btn hh-btn--primary">Publicar Regla</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DATA LIST PATTERN ── -->
+    <section class="ds-page" id="page-datalist">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Patrones</div>
+        <h1 class="ds-page-title">Lista de Datos con Filtros</h1>
+        <p class="ds-page-desc">Barra de filtros sobre una tabla ordenable. El patrón para cualquier pantalla de "lista de registros".</p>
+      </header>
+
+      <div class="ds-section">
+        <div class="ds-demo" style="padding:0">
+          <div class="hh-filter-bar">
+            <div class="hh-form-group"><label class="hh-label">Buscar</label><input class="hh-input" placeholder="Tienda, gerente..."></div>
+            <div class="hh-form-group"><label class="hh-label">Cluster</label><select class="hh-select"><option>Todos</option><option>Premium</option><option>Standard</option></select></div>
+            <div class="hh-form-group"><label class="hh-label">Status</label><select class="hh-select"><option>Todos</option><option>En meta</option><option>En riesgo</option></select></div>
+            <div class="hh-form-group"><label class="hh-label">Desde</label><input class="hh-input" type="date"></div>
+            <div class="hh-form-group"><label class="hh-label">Hasta</label><input class="hh-input" type="date"></div>
+            <button class="hh-btn hh-btn--secondary">Reiniciar</button>
+            <button class="hh-btn hh-btn--primary">Aplicar</button>
+          </div>
+          <table class="hh-table">
+            <thead>
+              <tr>
+                <th class="sortable">Tienda</th>
+                <th>Cluster</th>
+                <th class="right sortable">Ventas</th>
+                <th class="right sortable">% Alcance</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>R048 · Fashion Drive</td><td><span class="hh-badge">Premium</span></td><td class="right num">$1,247,580</td><td class="right num" style="color:var(--hh-success)">113.4%</td><td><span class="hh-badge hh-badge--success"><span class="hh-dot hh-dot--success"></span>En meta</span></td><td><button class="hh-btn hh-btn--ghost hh-btn--sm">Abrir</button></td></tr>
+              <tr><td>R032 · Antara</td><td><span class="hh-badge">Premium</span></td><td class="right num">$985,232</td><td class="right num" style="color:var(--hh-warning)">93.8%</td><td><span class="hh-badge hh-badge--warning"><span class="hh-dot hh-dot--warning"></span>En riesgo</span></td><td><button class="hh-btn hh-btn--ghost hh-btn--sm">Abrir</button></td></tr>
+              <tr><td>H015 · Perisur</td><td><span class="hh-badge">Standard</span></td><td class="right num">$652,108</td><td class="right num" style="color:var(--hh-danger)">81.5%</td><td><span class="hh-badge hh-badge--danger"><span class="hh-dot hh-dot--danger"></span>Atrasado</span></td><td><button class="hh-btn hh-btn--ghost hh-btn--sm">Abrir</button></td></tr>
+              <tr><td>R021 · Andares</td><td><span class="hh-badge">Premium</span></td><td class="right num">$1,108,420</td><td class="right num" style="color:var(--hh-success)">110.8%</td><td><span class="hh-badge hh-badge--success"><span class="hh-dot hh-dot--success"></span>En meta</span></td><td><button class="hh-btn hh-btn--ghost hh-btn--sm">Abrir</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TOKEN REFERENCE ── -->
+    <section class="ds-page" id="page-tokens">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Recursos</div>
+        <h1 class="ds-page-title">Referencia de Tokens</h1>
+        <p class="ds-page-desc">Copia este bloque <code style="font-family:var(--hh-font-mono);color:var(--hh-brand-300)">:root</code> en la hoja de estilos global de cualquier app de HH. Cada token de abajo es la fuente de verdad.</p>
+      </header>
+
+      <div class="ds-section">
+        <div class="ds-code" id="tokens-code"></div>
+      </div>
+    </section>
+
+    <!-- ── CONTRIBUTING ── -->
+    <section class="ds-page" id="page-contributing">
+      <header class="ds-page-header">
+        <div class="ds-page-eyebrow">Recursos</div>
+        <h1 class="ds-page-title">Contribuir</h1>
+        <p class="ds-page-desc">Cómo evolucionar el sistema de diseño de HH sin romperle el día a los demás.</p>
+      </header>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Gobernanza</h2>
+        <p style="color:var(--hh-text-2);font-size:var(--hh-fs-body);line-height:1.7;margin-bottom:var(--hh-space-12)">
+          El sistema de diseño es propiedad del <strong style="color:var(--hh-text-1)">equipo de Transformación</strong>. Los cambios pasan por un proceso de revisión ligero para mantener consistencia entre las apps de HH.
+        </p>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Versionado</h2>
+        <table class="hh-table">
+          <thead><tr><th>Tipo</th><th>Ejemplo</th><th>Proceso</th></tr></thead>
+          <tbody>
+            <tr><td><span class="hh-badge hh-badge--success">Patch</span></td><td>Ajustar una curva de easing, corregir un typo</td><td>PR directo · 1 revisor</td></tr>
+            <tr><td><span class="hh-badge hh-badge--warning">Minor</span></td><td>Añadir un nuevo componente o token</td><td>Revisión de diseño + 1 revisor de dev</td></tr>
+            <tr><td><span class="hh-badge hh-badge--danger">Major</span></td><td>Cambiar el valor de un token, renombrar una clase</td><td>Revisión completa · plan de migración · changelog</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Proponer un nuevo componente</h2>
+        <ol style="color:var(--hh-text-2);padding-left:20px;line-height:1.9;font-size:var(--hh-fs-body)">
+          <li>Abre un ticket en ClickUp en la lista <code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">DS · Propuestas</code> con mockup + caso de uso.</li>
+          <li>Confirma que al menos 2 apps lo usarían (de lo contrario es algo único, no un componente del sistema).</li>
+          <li>Usa solo tokens existentes. Si necesitas un nuevo token, propónlo por separado primero.</li>
+          <li>Una vez aprobado, contribuye con el HTML/CSS + un nodo de Figma, y documéntalo en la galería.</li>
+        </ol>
+      </div>
+
+      <div class="ds-section">
+        <h2 class="ds-section-title">Roadmap v2</h2>
+        <ul style="color:var(--hh-text-2);padding-left:20px;line-height:1.9;font-size:var(--hh-fs-body)">
+          <li><strong style="color:var(--hh-text-1)">Tokens de tema claro</strong> — alias de tokens para una variante en modo claro</li>
+          <li><strong style="color:var(--hh-text-1)">Librería de componentes React</strong> — publicada como <code style="color:var(--hh-brand-300);font-family:var(--hh-font-mono)">@hh/ui</code> en el npm interno</li>
+          <li><strong style="color:var(--hh-text-1)">Preset de Tailwind</strong> — para apps que prefieran utility-first</li>
+          <li><strong style="color:var(--hh-text-1)">Librería de Figma</strong> — publicada, con componentes auto-layout y variantes</li>
+          <li><strong style="color:var(--hh-text-1)">Auditoría de accesibilidad</strong> — revisión formal WCAG AA de todos los componentes</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // ── NAVIGATION ──
+  const links = document.querySelectorAll('.ds-nav-link');
+  const pages = document.querySelectorAll('.ds-page');
+  let chartsRendered = false;
+
+  function showPage(pageId) {
+    pages.forEach(p => p.classList.toggle('active', p.id === 'page-' + pageId));
+    links.forEach(l => l.classList.toggle('active', l.dataset.page === pageId));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (pageId === 'charts' || pageId === 'dashboard') {
+      requestAnimationFrame(renderCharts);
+    }
+  }
+
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const pageId = link.dataset.page;
+      history.replaceState(null, '', '#' + pageId);
+      showPage(pageId);
+    });
+  });
+
+  // Initial route from hash
+  const initialHash = location.hash.replace('#', '') || 'overview';
+  showPage(initialHash);
+
+  // ── TOKEN REFERENCE: extract :root from this stylesheet ──
+  const tokensEl = document.getElementById('tokens-code');
+  if (tokensEl) {
+    // Pull the :root block from the head <style>
+    const styleEl = document.querySelector('style');
+    const css = styleEl.textContent;
+    const match = css.match(/:root\s*\{([\s\S]*?)\n\s*\}/);
+    if (match) {
+      tokensEl.textContent = ':root {' + match[1] + '\n}';
+    }
+  }
+
+  // ── CHART.JS DEMOS ──
+  const hhChartTheme = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: { color: '#999', font: { size: 10, family: 'Inter' }, usePointStyle: true, pointStyleWidth: 8 }
+      },
+      tooltip: {
+        backgroundColor: '#1a1a1a',
+        borderColor: 'rgba(255,255,255,0.1)',
+        borderWidth: 1,
+        titleColor: '#fff',
+        bodyColor: '#ccc',
+        titleFont: { size: 11, family: 'Inter' },
+        bodyFont: { size: 11, family: 'Inter' },
+        padding: 8,
+        displayColors: true,
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(255,255,255,0.04)', drawBorder: false },
+        ticks: { color: '#999', font: { size: 10, family: 'Inter' } },
+        border: { display: false },
+      },
+      y: {
+        grid: { color: 'rgba(255,255,255,0.04)', drawBorder: false },
+        ticks: { color: '#999', font: { size: 10, family: 'Inter' } },
+        border: { display: false },
+      }
+    }
+  };
+
+  const hhVizColors = ['#41768d', '#80a4b3', '#44aa99', '#ddaa44', '#e08a3c', '#c07a8a', '#8a6fa0', '#6b8e9b'];
+  const chartInstances = {};
+
+  function renderCharts() {
+    if (chartsRendered) return;
+
+    const bar = document.getElementById('chart-bar');
+    if (bar && !chartInstances.bar) {
+      chartInstances.bar = new Chart(bar, {
+        type: 'bar',
+        data: {
+          labels: ['R048', 'R032', 'H015', 'R021', 'H022'],
+          datasets: [
+            { label: 'Ventas', data: [1247, 985, 652, 1108, 873], backgroundColor: hhVizColors[0], borderWidth: 0 },
+            { label: 'Presupuesto', data: [1100, 1050, 800, 1000, 900], backgroundColor: 'rgba(255,255,255,0.08)', borderWidth: 0 },
+          ]
+        },
+        options: hhChartTheme,
+      });
+    }
+
+    const dough = document.getElementById('chart-doughnut');
+    if (dough && !chartInstances.dough) {
+      chartInstances.dough = new Chart(dough, {
+        type: 'doughnut',
+        data: {
+          labels: ['Comisión Fija', 'Incentivo', 'Bono Tier', 'Extra'],
+          datasets: [{ data: [42, 28, 18, 12], backgroundColor: hhVizColors.slice(0, 4), borderWidth: 0 }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#999', font: { size: 10, family: 'Inter' }, padding: 10, usePointStyle: true, pointStyleWidth: 8 } }
+          }
+        }
+      });
+    }
+
+    const line = document.getElementById('chart-line');
+    if (line && !chartInstances.line) {
+      const days = Array.from({length: 30}, (_, i) => `D${i+1}`);
+      const data = Array.from({length: 30}, () => 80 + Math.random() * 60);
+      chartInstances.line = new Chart(line, {
+        type: 'line',
+        data: {
+          labels: days,
+          datasets: [{
+            label: 'Ventas',
+            data: data,
+            borderColor: hhVizColors[0],
+            backgroundColor: 'rgba(65,118,141,0.15)',
+            fill: true,
+            tension: 0.3,
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+          }]
+        },
+        options: { ...hhChartTheme, plugins: { ...hhChartTheme.plugins, legend: { display: false } } }
+      });
+    }
+
+    const m1 = document.getElementById('chart-mini-1');
+    if (m1 && !chartInstances.m1) {
+      chartInstances.m1 = new Chart(m1, {
+        type: 'line',
+        data: {
+          labels: Array.from({length: 30}, (_, i) => i+1),
+          datasets: [{ data: Array.from({length: 30}, () => 80 + Math.random() * 60), borderColor: hhVizColors[0], backgroundColor: 'rgba(65,118,141,0.15)', fill: true, tension: 0.3, borderWidth: 2, pointRadius: 0 }]
+        },
+        options: { ...hhChartTheme, plugins: { legend: { display: false }, tooltip: hhChartTheme.plugins.tooltip } }
+      });
+    }
+    const m2 = document.getElementById('chart-mini-2');
+    if (m2 && !chartInstances.m2) {
+      chartInstances.m2 = new Chart(m2, {
+        type: 'bar',
+        data: {
+          labels: ['Hombre', 'Mujer', 'Niño', 'Acc.'],
+          datasets: [{ data: [42, 38, 12, 8], backgroundColor: hhVizColors.slice(0, 4), borderWidth: 0 }]
+        },
+        options: { ...hhChartTheme, plugins: { legend: { display: false }, tooltip: hhChartTheme.plugins.tooltip } }
+      });
+    }
+  }
+</script>
+</body>
+</html>

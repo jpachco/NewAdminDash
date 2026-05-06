@@ -1,0 +1,185 @@
+/* Haber Holding Design System v1.0 — Design Tokens
+   Source of truth. Copy this :root block into the global stylesheet of any HH app.
+   Never hardcode values; always reference these tokens. */
+
+:root {
+    /* ─────────────────────────────────────────────
+       HH DESIGN TOKENS · v1.0
+       Inspired by Material 3 token architecture
+       Adapted to the HH dense-data aesthetic
+       ───────────────────────────────────────────── */
+
+    /* ── SURFACE / BACKGROUND ── */
+    --hh-bg:        #0c0c0c;
+    --hh-surface-1: #141414;  /* default surface */
+    --hh-surface-2: #1a1a1a;  /* raised */
+    --hh-surface-3: #222222;  /* higher */
+    --hh-surface-4: #2a2a2a;  /* highest (modals, menus) */
+    --hh-surface-5: #333333;  /* hover/active overlay */
+
+    /* ── BORDERS ── */
+    --hh-border-1: rgba(255,255,255,0.06);  /* hairline */
+    --hh-border-2: rgba(255,255,255,0.10);  /* default */
+    --hh-border-3: rgba(255,255,255,0.15);  /* strong */
+    --hh-border-4: rgba(255,255,255,0.22);  /* emphasis */
+
+    /* ── TEXT (on dark) ── */
+    --hh-text-1: #ffffff;          /* primary */
+    --hh-text-2: #cccccc;          /* secondary */
+    --hh-text-3: #999999;          /* tertiary / labels */
+    --hh-text-4: #666666;          /* disabled */
+    --hh-text-inverse: #0c0c0c;    /* on light surfaces */
+
+    /* ── BRAND (monochromatic blue) ── */
+    --hh-brand-50:  #e8eef1;
+    --hh-brand-100: #c5d2da;
+    --hh-brand-200: #9fb5c1;
+    --hh-brand-300: #80a4b3;   /* brand-1 (light accent) */
+    --hh-brand-400: #5a8a9e;
+    --hh-brand-500: #41768d;   /* brand-2 (PRIMARY) */
+    --hh-brand-600: #2a5d75;
+    --hh-brand-700: #014867;   /* brand-3 (deep) */
+    --hh-brand-800: #013349;
+    --hh-brand-900: #001f2c;
+
+    /* ── STATUS / SEMANTIC ── */
+    --hh-success:    #44aa99;
+    --hh-success-bg: rgba(68,170,153,0.08);
+    --hh-success-bd: rgba(68,170,153,0.25);
+
+    --hh-warning:    #ddaa44;
+    --hh-warning-bg: rgba(221,170,68,0.08);
+    --hh-warning-bd: rgba(221,170,68,0.25);
+
+    --hh-alert:      #e08a3c;
+    --hh-alert-bg:   rgba(224,138,60,0.08);
+    --hh-alert-bd:   rgba(224,138,60,0.25);
+
+    --hh-danger:     #dd5555;
+    --hh-danger-bg:  rgba(221,85,85,0.08);
+    --hh-danger-bd:  rgba(221,85,85,0.25);
+
+    --hh-info:       #80a4b3;
+    --hh-info-bg:    rgba(128,164,179,0.08);
+    --hh-info-bd:    rgba(128,164,179,0.25);
+
+    /* ── DATA-VIZ PALETTE (categorical, accessible on dark) ── */
+    --hh-viz-1: #41768d;  /* primary blue */
+    --hh-viz-2: #80a4b3;  /* light blue */
+    --hh-viz-3: #44aa99;  /* teal */
+    --hh-viz-4: #ddaa44;  /* gold */
+    --hh-viz-5: #e08a3c;  /* orange */
+    --hh-viz-6: #c07a8a;  /* dusty rose */
+    --hh-viz-7: #8a6fa0;  /* muted violet */
+    --hh-viz-8: #6b8e9b;  /* slate blue */
+
+    /* ── TYPOGRAPHY ── */
+    --hh-font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --hh-font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+    /* Type scale (compact, optimized for dense data UIs) */
+    --hh-fs-display:   28px;  /* page hero / login */
+    --hh-fs-h1:        20px;  /* page title */
+    --hh-fs-h2:        16px;  /* section title */
+    --hh-fs-h3:        14px;  /* card title */
+    --hh-fs-kpi-lg:    24px;  /* primary KPI */
+    --hh-fs-kpi:       22px;  /* KPI */
+    --hh-fs-kpi-sm:    18px;  /* small KPI */
+    --hh-fs-body:      13px;  /* body text */
+    --hh-fs-data:      12px;  /* table data */
+    --hh-fs-nav:       11px;  /* nav, buttons */
+    --hh-fs-label:     10px;  /* labels, captions */
+    --hh-fs-micro:     9px;   /* badges, tags */
+    --hh-fs-tiny:      8px;   /* annotations */
+
+    /* Font weights */
+    --hh-fw-light:    300;
+    --hh-fw-regular:  400;
+    --hh-fw-medium:   500;
+    --hh-fw-semibold: 600;
+
+    /* Line heights */
+    --hh-lh-tight:  1.15;
+    --hh-lh-snug:   1.35;
+    --hh-lh-normal: 1.45;
+    --hh-lh-relaxed: 1.6;
+
+    /* Letter spacing */
+    --hh-ls-tight:   -0.01em;
+    --hh-ls-normal:   0;
+    --hh-ls-wide:     0.05em;
+    --hh-ls-wider:    0.1em;
+
+    /* ── SPACING (4px base, M3-inspired) ── */
+    --hh-space-0:  0;
+    --hh-space-1:  2px;
+    --hh-space-2:  4px;
+    --hh-space-3:  6px;
+    --hh-space-4:  8px;
+    --hh-space-5:  10px;
+    --hh-space-6:  12px;
+    --hh-space-7:  14px;
+    --hh-space-8:  16px;
+    --hh-space-10: 20px;
+    --hh-space-12: 24px;
+    --hh-space-14: 28px;
+    --hh-space-16: 32px;
+    --hh-space-20: 40px;
+    --hh-space-24: 48px;
+    --hh-space-32: 64px;
+
+    /* ── SIZING ── */
+    --hh-header-h:    40px;
+    --hh-navbar-h:    36px;
+    --hh-input-h:     32px;
+    --hh-btn-h:       32px;
+    --hh-btn-h-sm:    26px;
+    --hh-btn-h-lg:    40px;
+    --hh-icon-sm:     14px;
+    --hh-icon-md:     16px;
+    --hh-icon-lg:     20px;
+
+    /* ── RADIUS (HH = sharp edges; M3 = rounded. We stay sharp for data UIs) ── */
+    --hh-radius-0:   0;
+    --hh-radius-1:   2px;
+    --hh-radius-2:   4px;
+    --hh-radius-3:   6px;
+    --hh-radius-pill: 999px;
+
+    /* ── ELEVATION (M3-inspired layered shadows for dark UI) ── */
+    --hh-elev-0: none;
+    --hh-elev-1: 0 1px 2px rgba(0,0,0,0.4);
+    --hh-elev-2: 0 2px 4px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.3);
+    --hh-elev-3: 0 4px 8px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.4);
+    --hh-elev-4: 0 8px 16px rgba(0,0,0,0.6), 0 4px 8px rgba(0,0,0,0.4);
+    --hh-elev-5: 0 16px 32px rgba(0,0,0,0.7), 0 8px 16px rgba(0,0,0,0.5);
+
+    /* ── MOTION (M3 easing tokens) ── */
+    --hh-ease-standard:    cubic-bezier(0.2, 0, 0, 1);
+    --hh-ease-emphasized:  cubic-bezier(0.3, 0, 0, 1);
+    --hh-ease-decelerate:  cubic-bezier(0, 0, 0, 1);
+    --hh-ease-accelerate:  cubic-bezier(0.3, 0, 1, 1);
+
+    --hh-dur-instant: 50ms;
+    --hh-dur-fast:    100ms;
+    --hh-dur-quick:   150ms;
+    --hh-dur-normal:  200ms;
+    --hh-dur-slow:    300ms;
+    --hh-dur-slower:  400ms;
+
+    /* ── STATE LAYERS (M3 concept: opacity overlays for hover/focus/press) ── */
+    --hh-state-hover:   rgba(255,255,255,0.04);
+    --hh-state-focus:   rgba(255,255,255,0.08);
+    --hh-state-press:   rgba(255,255,255,0.12);
+    --hh-state-select:  rgba(65,118,141,0.16);
+
+    /* ── Z-INDEX SCALE ── */
+    --hh-z-base:     1;
+    --hh-z-sticky:   100;
+    --hh-z-navbar:   190;
+    --hh-z-header:   200;
+    --hh-z-dropdown: 300;
+    --hh-z-modal:    400;
+    --hh-z-toast:    500;
+    --hh-z-tooltip:  600;
+}

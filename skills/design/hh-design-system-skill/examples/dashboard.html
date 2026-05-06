@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>HH · Dashboard Pattern</title>
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/components.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  body { background: var(--hh-bg); color: var(--hh-text-1); font-family: var(--hh-font-sans); margin: 0; padding-top: 76px; }
+  .container { max-width: 1600px; margin: 0 auto; padding: var(--hh-space-6) var(--hh-space-8); }
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--hh-space-8); margin: var(--hh-space-8) 0; }
+  .hh-app-header { position: fixed; top: 0; left: 0; right: 0; z-index: var(--hh-z-header); }
+  .hh-app-navbar { position: fixed; top: var(--hh-header-h); left: 0; right: 0; z-index: var(--hh-z-navbar); }
+</style>
+</head>
+<body>
+
+<div class="hh-app-header">
+  <div class="hh-app-header-left">
+    <div style="width:24px;height:24px;background:var(--hh-brand-500);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px">HH</div>
+    <div>
+      <span class="hh-app-header-title">DASHBOARD CEDIS</span>
+      <span class="hh-app-header-sub">Onest · Invenova</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:var(--hh-space-4);align-items:center">
+    <span class="hh-badge">v2.1</span>
+    <button class="hh-btn hh-btn--ghost hh-btn--sm">Gabriel</button>
+  </div>
+</div>
+
+<div class="hh-app-navbar">
+  <button class="hh-app-nav-btn active">Dashboard</button>
+  <button class="hh-app-nav-btn">Operaciones</button>
+  <button class="hh-app-nav-btn">KPIs</button>
+  <button class="hh-app-nav-btn">Reportes</button>
+  <button class="hh-app-nav-btn">Admin</button>
+</div>
+
+<div class="container">
+
+  <!-- KPI strip -->
+  <div class="hh-kpi-grid">
+    <div class="hh-kpi">
+      <div class="hh-kpi-label">Ingresos MTD</div>
+      <div class="hh-kpi-value">$3.99M</div>
+      <div class="hh-kpi-sub"><span class="hh-kpi-trend up">▲ 12.4%</span> vs mes anterior</div>
+    </div>
+    <div class="hh-kpi">
+      <div class="hh-kpi-label">Margen</div>
+      <div class="hh-kpi-value">42.1%</div>
+      <div class="hh-kpi-sub">Meta: 40%</div>
+    </div>
+    <div class="hh-kpi">
+      <div class="hh-kpi-label">Tickets</div>
+      <div class="hh-kpi-value">12,847</div>
+      <div class="hh-kpi-sub"><span class="hh-kpi-trend up">▲ 8.2%</span></div>
+    </div>
+    <div class="hh-kpi">
+      <div class="hh-kpi-label">Ticket Promedio</div>
+      <div class="hh-kpi-value">$310.84</div>
+      <div class="hh-kpi-sub"><span class="hh-kpi-trend down">▼ 2.1%</span></div>
+    </div>
+    <div class="hh-kpi">
+      <div class="hh-kpi-label">Conversión</div>
+      <div class="hh-kpi-value">18.2%</div>
+      <div class="hh-kpi-sub">Foot: 70,478</div>
+    </div>
+  </div>
+
+  <!-- Chart row -->
+  <div class="charts-row">
+    <div class="hh-chart-box">
+      <div class="hh-chart-header"><div class="hh-chart-title">Tendencia 30 días</div></div>
+      <div style="position:relative;height:160px"><canvas id="chart-trend"></canvas></div>
+    </div>
+    <div class="hh-chart-box">
+      <div class="hh-chart-header"><div class="hh-chart-title">Por Categoría</div></div>
+      <div style="position:relative;height:160px"><canvas id="chart-cat"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Data table -->
+  <table class="hh-table">
+    <thead>
+      <tr>
+        <th class="sortable">Tienda</th>
+        <th>Cluster</th>
+        <th class="right sortable">Ventas MTD</th>
+        <th class="right">% Alcance</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>R048 · Fashion Drive</td>
+        <td><span class="hh-badge">Premium</span></td>
+        <td class="right num">$1,247,580</td>
+        <td class="right num" style="color:var(--hh-success)">113.4%</td>
+        <td><span class="hh-badge hh-badge--success"><span class="hh-dot hh-dot--success"></span>En meta</span></td>
+      </tr>
+      <tr>
+        <td>R032 · Antara</td>
+        <td><span class="hh-badge">Premium</span></td>
+        <td class="right num">$985,232</td>
+        <td class="right num" style="color:var(--hh-warning)">93.8%</td>
+        <td><span class="hh-badge hh-badge--warning"><span class="hh-dot hh-dot--warning"></span>En riesgo</span></td>
+      </tr>
+      <tr>
+        <td>H015 · Perisur</td>
+        <td><span class="hh-badge">Standard</span></td>
+        <td class="right num">$652,108</td>
+        <td class="right num" style="color:var(--hh-danger)">81.5%</td>
+        <td><span class="hh-badge hh-badge--danger"><span class="hh-dot hh-dot--danger"></span>Atrasado</span></td>
+      </tr>
+      <tr class="total-row">
+        <td colspan="2">Total · 3 tiendas</td>
+        <td class="right num">$2,884,920</td>
+        <td class="right num">96.2%</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<script type="module">
+  // Chart theme is in ../assets/chart-theme.js — import it in real apps.
+  // Inlined here for the standalone example.
+  const hhChartTheme = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: '#999', font: { size: 10, family: 'Inter' }, usePointStyle: true, pointStyleWidth: 8 } },
+      tooltip: { backgroundColor: '#1a1a1a', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, titleColor: '#fff', bodyColor: '#ccc', titleFont: { size: 11, family: 'Inter' }, bodyFont: { size: 11, family: 'Inter' }, padding: 8 }
+    },
+    scales: {
+      x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#999', font: { size: 10 } }, border: { display: false } },
+      y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#999', font: { size: 10 } }, border: { display: false } }
+    }
+  };
+  const hhVizColors = ['#41768d', '#80a4b3', '#44aa99', '#ddaa44'];
+
+  new Chart(document.getElementById('chart-trend'), {
+    type: 'line',
+    data: {
+      labels: Array.from({length: 30}, (_, i) => i+1),
+      datasets: [{ label: 'Ventas', data: Array.from({length: 30}, () => 80 + Math.random() * 60), borderColor: hhVizColors[0], backgroundColor: 'rgba(65,118,141,0.15)', fill: true, tension: 0.3, borderWidth: 2, pointRadius: 0 }]
+    },
+    options: { ...hhChartTheme, plugins: { legend: { display: false }, tooltip: hhChartTheme.plugins.tooltip } }
+  });
+
+  new Chart(document.getElementById('chart-cat'), {
+    type: 'bar',
+    data: {
+      labels: ['Hombre', 'Mujer', 'Niño', 'Accesorios'],
+      datasets: [{ label: 'Ventas', data: [42, 38, 12, 8], backgroundColor: hhVizColors, borderWidth: 0 }]
+    },
+    options: { ...hhChartTheme, plugins: { legend: { display: false }, tooltip: hhChartTheme.plugins.tooltip } }
+  });
+</script>
+
+</body>
+</html>
